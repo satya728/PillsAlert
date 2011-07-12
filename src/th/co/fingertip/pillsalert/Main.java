@@ -1,6 +1,6 @@
-package co.th.fingertip.pillsalert;
+package th.co.fingertip.pillsalert;
 
-import co.th.fingerprint.pillsalert.R;
+import th.co.fingertip.pillsalert.R;
 import android.app.Activity;
 import android.os.Bundle;
 
