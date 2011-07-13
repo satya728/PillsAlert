@@ -24,11 +24,15 @@ public class CameraTestActivity extends Activity implements SurfaceHolder.Callba
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//prepare
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		m_context = this;
+		
+		
 		setContentView(R.layout.pon_camera);
 		SurfaceView sv = (SurfaceView) findViewById(R.id.surface_view);
 		SurfaceHolder sv_holder = sv.getHolder();
@@ -54,16 +58,13 @@ public class CameraTestActivity extends Activity implements SurfaceHolder.Callba
 		}
 		
 		Camera.Parameters p = camera.getParameters();
-		//p.setPreviewSize(width, height);
-//		p.set("orientation","portrait");
-//		p.setRotation(90);
 		
 		List<Camera.Size> supported_preview_size = p.getSupportedPreviewSizes();
 		Camera.Size size = supported_preview_size.get(0);
 		p.setPreviewSize(size.width, size.height);
 		
 		try{
-			camera.setParameters(p); //////\
+			camera.setParameters(p); 
 		}
 		catch(Exception e){
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();

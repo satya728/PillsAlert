@@ -23,5 +23,8 @@
 	    android:layout_height="wrap_content"
 	    android:text="@string/stop_service"
 	/>
+	
+	
+	
     
 </LinearLayout>

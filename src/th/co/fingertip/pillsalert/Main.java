@@ -1,7 +1,9 @@
 package th.co.fingertip.pillsalert;
 
 import th.co.fingertip.pillsalert.R;
+import th.co.fingertip.pillsalert.camera.CameraMyTestActivity;
 import th.co.fingertip.pillsalert.camera.CameraTestActivity;
+import th.co.fingertip.pillsalert.camera.NativeCameraActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,14 +62,20 @@ public class Main extends Activity {
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		Intent intent = new Intent(); 
 		switch(item.getItemId()){
 			case R.id.camera_test_activity:
-				Intent intent = new Intent(this, CameraTestActivity.class);
-				startActivity(intent);
+				//Intent intent = new Intent(this, CameraTestActivity.class);
+				intent.setClass(this, CameraMyTestActivity.class);
+				break;
+			case R.id.native_camera_activity:
+				intent.setClass(this, NativeCameraActivity.class);
 				break;
 		}
+		startActivity(intent);
 		return super.onMenuItemSelected(featureId, item);
 	}
+
 	
 	
 }
