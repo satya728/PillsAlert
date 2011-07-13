@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+  android:orientation="vertical"
+
+  android:layout_width="fill_parent"
+
+  android:layout_height="fill_parent">
+
+
+
+  <TextView
+
+      android:layout_width="fill_parent"
+
+      android:layout_height="wrap_content"
+
+      android:text="Press the button, capture photo and enjoy!!"
+
+      android:id="@+id/textview1"/>
+
+
+
+  <Button
+
+      android:text="Take Photo!"
+
+      android:id="@+id/button1"
+
+      android:layout_width="wrap_content"
+
+      android:layout_height="wrap_content"
+
+      android:layout_below="@+id/textview1">
+
+  </Button>
+
+
+
+  <ImageButton
+
+      android:id="@+id/imageView1"
+
+      android:layout_height="wrap_content"
+
+      android:layout_width="wrap_content"
+
+      android:src="@drawable/icon"
+
+      
+
+      android:layout_below="@+id/button1"
+      android:maxHeight="100dp"
+      android:maxWidth="100dp"
+      
+      >
+
+  </ImageButton>
+
+</RelativeLayout>

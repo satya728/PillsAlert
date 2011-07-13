@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:padding="10px"
+  android:background="@drawable/background"
+  >
+  <ScrollView 
+		android:id="@+id/scrllvwNo1" 
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+	> 
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="?android:attr/listPreferredItemHeight"
+	    android:padding="6dip"
+	   >
+		    <ImageButton
+		      android:id="@+id/pill_image"
+		      android:minHeight="80px"
+		      android:minWidth="80px" 
+		      android:layout_width="wrap_content"
+          android:layout_height="fill_parent"        
+          android:layout_alignParentTop="true"
+          android:layout_alignParentBottom="true"
+          android:layout_marginRight="6dip"
+		    />
+		    <EditText
+		      android:id="@+id/pill_title"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:text="Enter Pill Title"
+		      android:layout_alignParentRight="true"
+		    />
+		  
+<!-- 		  <TextView
+		    android:text="Note"
+		    android:id="@+id/pill_note_label" 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		  />
+		  <EditText
+		    android:id="@+id/pill_note"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:height="200dp"
+		  />
+		  <Button
+		    android:id="@+id/save_pill"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/save_pill_label"
+		  /> -->
+		</RelativeLayout>
+  </ScrollView>
+</LinearLayout>
