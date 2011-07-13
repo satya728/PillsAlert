@@ -16,6 +16,6 @@
         </activity>
         <activity android:name="th.co.fingertip.pillsalert.camera.CameraTestActivity" />
 
-
+		<service android:name=".TimeService"/>
     </application>
 </manifest>
