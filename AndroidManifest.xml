@@ -8,14 +8,19 @@
     <uses-feature android:name="android.hardware.camera"/>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name="th.co.fingertip.pillsalert.Main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name="th.co.fingertip.pillsalert.camera.CameraTestActivity" />
-
+	    <activity android:name="th.co.fingertip.pillsalert.Main">
+	        
+	    </activity>
+	    <activity android:name="th.co.fingertip.pillsalert.camera.CameraTestActivity" />
+        
+      <activity android:name="th.co.fingertip.pillsalert.ui.MainActivity" />
+      <activity android:name="th.co.fingertip.pillsalert.CameraTest2">
+          <intent-filter>
+              <action android:name="android.intent.action.MAIN" />
+              <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter> 
+      </activity>
+        
 		<service android:name=".TimeService"/>
     </application>
 </manifest>
