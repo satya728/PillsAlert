@@ -35,7 +35,7 @@
 		      android:layout_alignParentRight="true"
 		    />
 		  
-<!-- 		  <TextView
+ 		  <TextView
 		    android:text="Note"
 		    android:id="@+id/pill_note_label" 
 		    android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="@string/save_pill_label"
-		  /> -->
+		  />
 		</RelativeLayout>
   </ScrollView>
 </LinearLayout>
