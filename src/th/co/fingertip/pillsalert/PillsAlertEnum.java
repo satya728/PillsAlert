@@ -21,6 +21,9 @@ public class PillsAlertEnum {
 		public static final int PERIOD_READ				= 21;
 		public static final int PERIOD_UPDATE			= 22;
 		public static final int PERIOD_DELETE			= 23;
+		
+		public static final int CAMERA_REQUEST 			= 1313;
+		public static final int CAMERA_PIC_REQUEST 		= 1414;
 	}
 	public static class Result{
 		public static final int PILL_CREATE = 0;
