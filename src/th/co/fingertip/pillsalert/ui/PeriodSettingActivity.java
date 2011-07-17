@@ -95,7 +95,6 @@ public class PeriodSettingActivity extends ListActivity{
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		Util.trace(this,"yo", Util.LONG_TRACE);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.period_setting_context_menu, menu);
 	}
