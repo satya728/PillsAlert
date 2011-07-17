@@ -5,6 +5,7 @@ import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
+import th.co.fingertip.pillsalert.util.Util;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.SimpleCursorAdapter;
 
+
 public class PeriodSettingActivity extends ListActivity{
 
 	PeriodDatabaseAdapter period_database;
@@ -30,6 +32,7 @@ public class PeriodSettingActivity extends ListActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.period_setting);
+		registerForContextMenu(getListView());
 		
 		period_database = new PeriodDatabaseAdapter(this);
 		period_database.connect();
@@ -92,6 +95,7 @@ public class PeriodSettingActivity extends ListActivity{
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		Util.trace(this,"yo", Util.LONG_TRACE);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.period_setting_context_menu, menu);
 	}

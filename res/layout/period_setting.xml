@@ -14,5 +14,6 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent" 
         android:layout_height="match_parent" 
+        android:text="No period defined. Please add new period from menu."
        />
 </LinearLayout>
