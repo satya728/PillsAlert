@@ -20,10 +20,8 @@
 
       android:id="@+id/textview1"/>
 
-
-
   <Button
-
+  
       android:text="Take Photo!"
 
       android:id="@+id/button1"
@@ -47,9 +45,6 @@
       android:layout_width="wrap_content"
 
       android:src="@drawable/icon"
-
-      
-
       android:layout_below="@+id/button1"
       android:maxHeight="100dp"
       android:maxWidth="100dp"
