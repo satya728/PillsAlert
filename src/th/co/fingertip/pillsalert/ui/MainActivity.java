@@ -27,6 +27,10 @@ public class MainActivity extends Activity {
 	
 	String[] images = {
 			"test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
+			"test6.PNG", "test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
+			"test6.PNG", "test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
+			"test6.PNG", "test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
+			"test6.PNG", "test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
 			"test6.PNG"
 	};
 	
