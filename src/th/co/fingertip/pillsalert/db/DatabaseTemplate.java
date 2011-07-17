@@ -113,11 +113,10 @@ public abstract class DatabaseTemplate {
      * 
      * @param params Parameter instance that of the data to be updated
      * @param where_statement String stating the selection condition
-     * @return new created row id
+     * @return boolean expressing the update status
      */
 	public boolean updateRow(Parameters params,Long row_id){
 		ContentValues content_values = params.getContentValues();
-		String x= "10";
 		
 		return sqlite_db_instance.update(
 			table_name, 

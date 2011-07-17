@@ -1,10 +1,9 @@
 package th.co.fingertip.pillsalert.db;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
-
 import android.content.ContentValues;
 
 public class Parameters {
@@ -31,7 +30,7 @@ public class Parameters {
 	}
 	
 	public ContentValues getContentValues(){
-		ContentValues content_values = null;
+		ContentValues content_values = new ContentValues();
 		String[] schema = null;
 		switch(mode){
 			case PillsAlertEnum.Model.PILL:
@@ -44,24 +43,32 @@ public class Parameters {
 				schema = DatabaseConfiguration.PERIOD_SCHEMA_KEYS;
 				break;
 		}
-		
+
 		//may use generic
-		for(int i = 0 ; i < elements.size() ; i++){
-			if(elements.get(schema[i]).getClass() == String.class){
-				String value = (String)elements.get(schema[i]);
-				content_values.put(
-					schema[i], 
-					value
-				);
+		String text = "";
+		Iterator iterator = elements.keySet().iterator();
+		while(iterator.hasNext()){
+			String column_name = (String) iterator.next();
+			Object tmp_object = elements.get(column_name);
+			if( tmp_object != null){
+				if(tmp_object.getClass() == String.class){
+					content_values.put(
+						column_name, 
+						(String)tmp_object
+					);
+				}
+				else if(tmp_object.getClass() == Integer.class){
+					Integer value = (Integer)elements.get(column_name);
+					content_values.put(
+						column_name, 
+						(Integer)value
+					);
+				}
 			}
-			else if(elements.get(schema[i]).getClass() == Integer.class){
-				Integer value = (Integer)elements.get(schema[i]);
-				content_values.put(
-					schema[i], 
-					value
-				);
-			}
+			text = text+"["+column_name+":"+tmp_object.toString()+"]";
 		}
+
+		System.out.print(text);
 		return content_values;
 	}
 }

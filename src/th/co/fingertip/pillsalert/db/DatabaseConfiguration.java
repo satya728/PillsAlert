@@ -15,14 +15,14 @@ public class DatabaseConfiguration {
 	
 	public static String 	NOTIFICATION_TABLE_NAME			= "notifications";
 	public static String[]  NOTIFICATION_SCHEMA_KEYS		= {"_id","pill_id","period_id"};
-	public static String 	NOTIFICATION_CREATE_STATEMENT 	= "create notifications ("+
+	public static String 	NOTIFICATION_CREATE_STATEMENT 	= "create table notifications ("+
 															  "_id integer primary key autoincrement, "+
 															  "pill_id integer not null, "+
 															  "period_id integer not null);";
 	
 	public static String 	PERIOD_TABLE_NAME				= "periods";
 	public static String[]  PERIOD_SCHEMA_KEYS				= {"_id","title","time"};
-	public static String 	PERIOD_CREATE_STATEMENT 		= "create periods ("+
+	public static String 	PERIOD_CREATE_STATEMENT 		= "create table periods ("+
 															  "_id integer primary key autoincrement, "+
 															  "title text not null, "+
 															  "time text not null);";
