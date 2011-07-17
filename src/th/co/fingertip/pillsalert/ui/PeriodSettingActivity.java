@@ -58,32 +58,34 @@ public class PeriodSettingActivity extends ListActivity{
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Bundle period_data = data.getExtras();
-		Parameters period_data_parameters = new Parameters(PillsAlertEnum.Model.PERIOD);
-		String a = period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]);
-		String b = period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2]);
-		if(period_data != null){
-			period_data_parameters.put(
-				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1],
-				period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1])
-			);
-			period_data_parameters.put(
-				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2],
-				period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2])
-			);
+		if(data != null){
+			Bundle period_data = data.getExtras();
+			Parameters period_data_parameters = new Parameters(PillsAlertEnum.Model.PERIOD);
+			if(period_data != null){
+				period_data_parameters.put(
+					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1],
+					period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1])
+				);
+				period_data_parameters.put(
+					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2],
+					period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2])
+				);
+			}
+	
+			switch(resultCode){
+				case PillsAlertEnum.Result.PERIOD_CREATE:
+					long aa = period_database.insertRow(period_data_parameters);
+					System.out.println(aa+"");
+					break;
+				case PillsAlertEnum.Result.PERIOD_UPDATE:
+					Long r_id = period_data.getLong(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]);
+					period_database.updateRow(period_data_parameters, r_id);
+					break;
+				default:
+					break;
+			}	
+			fill_data();
 		}
-
-		switch(resultCode){
-			case PillsAlertEnum.Result.PERIOD_CREATE:
-				long aa = period_database.insertRow(period_data_parameters);
-				System.out.println(aa+"");
-				break;
-			case PillsAlertEnum.Result.PERIOD_UPDATE:
-				Long r_id = period_data.getLong(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]);
-				period_database.updateRow(period_data_parameters, r_id);
-				break;
-		}
-		fill_data();
 	}
 
 	@Override
