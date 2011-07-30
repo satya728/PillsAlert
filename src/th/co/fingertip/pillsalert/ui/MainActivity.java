@@ -1,100 +1,113 @@
 package th.co.fingertip.pillsalert.ui;
 
-import th.co.fingertip.pillsalert.FileManager;
+import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
+import th.co.fingertip.pillsalert.adapter.ImageAdapter;
+import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
+import th.co.fingertip.pillsalert.factory.ImageFactory;
+import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.Toast;
+import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends Activity {
+	private String[] images = {"test.PNG"};
+	private ImageAdapter image_adapter;
 	
-//	Integer[] image_ids = {
-//			R.drawable.sample_0, R.drawable.sample_1, R.drawable.sample_2,
-//			R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
-//			R.drawable.sample_6, R.drawable.sample_7, R.drawable.sample_0,
-//			R.drawable.sample_1, R.drawable.sample_2, R.drawable.sample_3,
-//	};
-	
-	String[] images = {
-			"test.PNG", "test2.PNG", "test3.PNG", "test4.PNG", "test5.PNG",
-			"test6.PNG"
-	};
-	
-	public class ImageAdapter extends BaseAdapter {
-		
-		private Context context;
-		
-		public ImageAdapter (Context context) {
-			this.context = context;
-		}
-		
-		@Override
-		public int getCount() {
-			
-			return images.length;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return images[position];
-		}
-
-		@Override
-		public long getItemId(int position) {
-			
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convert_view, ViewGroup parent) {
-			ImageView image_view;
-			if (convert_view == null) {
-				image_view = new ImageView(context);
-				image_view.setLayoutParams(new GridView.LayoutParams(80,80));
-				image_view.setScaleType(ScaleType.CENTER_CROP);
-				image_view.setPadding(3, 3, 3, 3);
-			} else {
-				image_view = (ImageView) convert_view;
-			}
-//			image_view.setImageResource(image_ids[position]);
-			image_view.setImageBitmap(BitmapFactory.decodeStream(
-					FileManager.readFromFile(images[position])));
-			return image_view;
-		}
-		
-	}
+	PillDatabaseAdapter pill_database;
+	Cursor pill_cursor;
+	SimpleCursorAdapter pill_cursor_adapter;
+	GridView gridview;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		GridView gridview = (GridView)findViewById(R.id.main_ui_gridview);
-		gridview.setAdapter(new ImageAdapter(this));
+		pill_database = new PillDatabaseAdapter(this);
+		pill_database.connect();
+		
+		gridview = (GridView)findViewById(R.id.main_ui_gridview);
+		
 		gridview.setOnItemClickListener(new OnItemClickListener(){
-
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				Toast.makeText(getBaseContext(), Integer.toString(position), Toast.LENGTH_LONG).show();
+			public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+				
 				
 			}
 			
 		});
+		registerForContextMenu(gridview);
 	}
 	
+	private void fill_data(){
+		pill_cursor = pill_database.selectRow(null);
+		
+		image_adapter = new ImageAdapter(this, pill_cursor); //images);
+		gridview.setAdapter(image_adapter);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_context_menu, menu);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_option_menu, menu);
+		return true;
+	}
 
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		super.onMenuItemSelected(featureId, item);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId()){
+			case R.id.main_add_pill:
+				Intent create_intent = new Intent(this, PillEditorActivity.class);
+				startActivityForResult(create_intent, PillsAlertEnum.Request.PERIOD_CREATE);
+				break;
+			case R.id.main_set_period:
+				Intent period_setting_intent = new Intent(this, PeriodSettingActivity.class);
+				startActivity(period_setting_intent);
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(resultCode){
+			case PillsAlertEnum.Result.PILL_CREATE:
+				Util.put(this, "create returned", Util.SHORT_TRACE);
+				
+				break;
+		}
+		
+	}
+	
 	
 }
