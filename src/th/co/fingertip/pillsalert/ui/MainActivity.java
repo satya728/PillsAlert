@@ -3,12 +3,15 @@ package th.co.fingertip.pillsalert.ui;
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageAdapter;
+import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
+import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -48,14 +51,16 @@ public class MainActivity extends Activity {
 			}
 			
 		});
+		fill_data();
 		registerForContextMenu(gridview);
 	}
 	
 	private void fill_data(){
 		pill_cursor = pill_database.selectRow(null);
-		
-		image_adapter = new ImageAdapter(this, pill_cursor); //images);
-		gridview.setAdapter(image_adapter);
+		if(pill_cursor.getCount() != 0){
+			image_adapter = new ImageAdapter(this, pill_cursor); //images);
+			gridview.setAdapter(image_adapter);
+		}
 	}
 	
 	@Override
@@ -100,12 +105,32 @@ public class MainActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		Bundle bundle_data = data.getExtras();
+		Parameters new_pill_data = new Parameters(PillsAlertEnum.Model.PILL);
 		switch(resultCode){
 			case PillsAlertEnum.Result.PILL_CREATE:
 				Util.put(this, "create returned", Util.SHORT_TRACE);
-				
+				new_pill_data.put(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[1],
+					bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1])
+				);
+				new_pill_data.put(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[2],
+					bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2])
+				);
+				Boolean with_image =bundle_data.getBoolean(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
+				new_pill_data.put(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+					with_image
+				);
+				Long new_pill_id = pill_database.insertRow(new_pill_data);
+				if((new_pill_id != -1) && with_image.booleanValue() ){
+					Bitmap pill_image = bundle_data.getParcelable("image");				
+					ImageFactory.save_bitmap(pill_image, new_pill_id+".PNG");
+				}
 				break;
 		}
+		fill_data();
 		
 	}
 	

@@ -62,13 +62,38 @@ public class PillEditorActivity extends Activity {
 				//add new pill
 				if(row_id == null){
 					Intent create_pill_intent = new Intent();
-					pill_data.putParcelable("image", pill_bitmap); //pill image
+					if(pill_bitmap != null){
+						pill_data.putBoolean(
+							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+							true
+						);
+						pill_data.putParcelable("image", pill_bitmap); //pill image
+					}else{
+						pill_data.putBoolean(
+							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+							false
+						);
+					}
+					create_pill_intent.putExtras(pill_data);
 					setResult(PillsAlertEnum.Result.PILL_CREATE,create_pill_intent);
 				}
 				//update pill
 				else{
 					Intent update_pill_intent = new Intent();
+					if(pill_bitmap != null){
+						pill_data.putBoolean(
+							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+							true
+						);
+						pill_data.putParcelable("image", pill_bitmap); //pill image
+					}else{
+						pill_data.putBoolean(
+							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+							false
+						);
+					}
 					pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], row_id); //pill row id
+					update_pill_intent.putExtras(pill_data);
 					setResult(PillsAlertEnum.Result.PERIOD_UPDATE, update_pill_intent);
 				}
 				finish();

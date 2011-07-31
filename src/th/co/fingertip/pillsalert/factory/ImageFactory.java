@@ -16,6 +16,13 @@ public class ImageFactory {
 			FileManager.readFromFile(file_name)
 		);
 	}
+	
+	public static Bitmap get_bitmap(String file_name, String directory){
+		return BitmapFactory.decodeStream(
+			FileManager.readFromFile(file_name,directory)
+		);
+	}
+	
 	public static boolean save_bitmap(Bitmap bitmap, String file_name){
 		return FileManager.writeToFile(bitmap, FileManager.buildFullPath("", file_name));
 	}
