@@ -10,25 +10,20 @@
     <uses-feature android:name="android.hardware.camera"/>
 
     <application android:icon="@drawable/pillsalert" android:label="@string/app_name">
-
-	    <activity android:name="th.co.fingertip.pillsalert.Main">
-	    
-	    </activity>
+      <activity android:name="th.co.fingertip.pillsalert.CameraTest2"></activity>
+      <activity android:name="th.co.fingertip.pillsalert.GalleryActivity" ></activity>
+      <activity android:name="th.co.fingertip.pillsalert.Main"></activity>
       <activity android:name="th.co.fingertip.pillsalert.ui.MainActivity" >
         <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
+          <action android:name="android.intent.action.MAIN" />
+          <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <activity android:name="th.co.fingertip.pillsalert.CameraTest2"></activity>
-      <activity android:name="th.co.fingertip.pillsalert.ui.PillEditorActivity">
-      </activity>
-      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity">
-        
-      </activity>  
-      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEditorActivity"></activity>   
-    	<activity android:name="th.co.fingertip.pillsalert.CameraTest2"></activity>
-        
+      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEdtiorActivity"></activity>  
+      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity"></activity>  
+      <activity android:name="th.co.fingertip.pillsalert.ui.PillEditorActivity"></activity>
+    </application>
+    
 		<service android:name=".TimeService"/>
     </application>
 </manifest>
