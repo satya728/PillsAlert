@@ -13,8 +13,8 @@
 	> 
 	 <LinearLayout
 	  android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 	 >
 	    <ImageButton
 	      android:id="@+id/pill_image"
@@ -26,14 +26,15 @@
 	    <TextView
         android:text="Pill Title"
         android:id="@+id/pill_title_label" 
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
       />
 	    <EditText
 	      android:id="@+id/pill_title"
-	      android:layout_width="wrap_content"
+	      android:layout_width="match_parent"
 	      android:layout_height="wrap_content"
-	      android:text="Enter Pill Title"
+	      android:text=""
+	      android:gravity="top"
 	    />
 		  
  		  <TextView
