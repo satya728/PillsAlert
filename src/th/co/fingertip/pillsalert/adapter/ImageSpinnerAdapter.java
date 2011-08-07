@@ -1,4 +1,4 @@
-package th.co.fingertip.pillsalert.dragndrop;
+package th.co.fingertip.pillsalert.adapter;
 
 import java.util.Arrays;
 import java.util.Vector;

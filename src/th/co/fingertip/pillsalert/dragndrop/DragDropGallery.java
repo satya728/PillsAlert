@@ -1,5 +1,6 @@
 package th.co.fingertip.pillsalert.dragndrop;
 
+import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.util.Util;
 import android.content.Context;
 import android.util.AttributeSet;

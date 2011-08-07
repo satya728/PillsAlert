@@ -1,8 +1,8 @@
 package th.co.fingertip.pillsalert;
 
+import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
-import th.co.fingertip.pillsalert.dragndrop.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
 import android.os.Bundle;
