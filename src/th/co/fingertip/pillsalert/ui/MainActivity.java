@@ -46,8 +46,26 @@ public class MainActivity extends Activity {
 		gridview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+				Bundle pill_data = new Bundle();
+				pill_cursor.moveToPosition(position);
+				pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], id);
+				pill_data.putString(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[1], 
+					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]))
+				);
+				pill_data.putString(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[2], 
+					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]))
+				);
+				Integer with_image = pill_cursor.getInt(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
+				pill_data.putInt(
+					DatabaseConfiguration.PILL_SCHEMA_KEYS[3], 
+					pill_cursor.getInt(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]))
+				);
 				
-				
+				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
+				edit_note_intent.putExtras(pill_data);
+				startActivityForResult(edit_note_intent, PillsAlertEnum.Request.PERIOD_UPDATE);  
 			}
 			
 		});
@@ -107,27 +125,40 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Bundle bundle_data = data.getExtras();
 		Parameters new_pill_data = new Parameters(PillsAlertEnum.Model.PILL);
+		Integer with_image = null;
+		
+		new_pill_data.put(
+			DatabaseConfiguration.PILL_SCHEMA_KEYS[1],
+			bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1])
+		);
+		new_pill_data.put(
+			DatabaseConfiguration.PILL_SCHEMA_KEYS[2],
+			bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2])
+		);
+		with_image =bundle_data.getInt(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
+		new_pill_data.put(
+			DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+			with_image
+		);
+		Util.put(this, "result code = " + resultCode, Util.LONG_TRACE);
 		switch(resultCode){
 			case PillsAlertEnum.Result.PILL_CREATE:
-				Util.put(this, "create returned", Util.SHORT_TRACE);
-				new_pill_data.put(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[1],
-					bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1])
-				);
-				new_pill_data.put(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[2],
-					bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2])
-				);
-				Boolean with_image =bundle_data.getBoolean(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
-				new_pill_data.put(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-					with_image
-				);
 				Long new_pill_id = pill_database.insertRow(new_pill_data);
-				if((new_pill_id != -1) && with_image.booleanValue() ){
+				if((new_pill_id != -1) && Util.integer_to_boolean(with_image) ){
 					Bitmap pill_image = bundle_data.getParcelable("image");				
 					ImageFactory.save_bitmap(pill_image, new_pill_id+".PNG");
 				}
+				break;
+			case PillsAlertEnum.Result.PILL_UPDATE:
+				Long row_id = bundle_data.getLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]);
+				boolean is_updated = pill_database.updateRow(new_pill_data, row_id);
+				if(is_updated && Util.integer_to_boolean(with_image)){
+					Bitmap pill_image = bundle_data.getParcelable("image");				
+					ImageFactory.save_bitmap(pill_image, row_id+".PNG");
+				}
+				
+				break;
+			default:
 				break;
 		}
 		fill_data();
