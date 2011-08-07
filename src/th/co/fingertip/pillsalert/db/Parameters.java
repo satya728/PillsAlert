@@ -58,10 +58,15 @@ public class Parameters {
 					);
 				}
 				else if(tmp_object.getClass() == Integer.class){
-					Integer value = (Integer)elements.get(column_name);
 					content_values.put(
 						column_name, 
-						(Integer)value
+						(Integer)tmp_object
+					);
+				}
+				else if(tmp_object.getClass() == Boolean.class){
+					content_values.put(
+						column_name, 
+						(Boolean)tmp_object
 					);
 				}
 			}

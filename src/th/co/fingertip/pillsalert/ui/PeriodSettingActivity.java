@@ -78,7 +78,6 @@ public class PeriodSettingActivity extends ListActivity{
 			switch(resultCode){
 				case PillsAlertEnum.Result.PERIOD_CREATE:
 					long aa = period_database.insertRow(period_data_parameters);
-					System.out.println(aa+"");
 					break;
 				case PillsAlertEnum.Result.PERIOD_UPDATE:
 					Long r_id = period_data.getLong(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]);

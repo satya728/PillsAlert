@@ -9,4 +9,16 @@ public class Util {
 	public static void put(Context context,String text,int duration){
 		Toast.makeText(context, text, duration).show();
 	}
+	public static boolean integer_to_boolean(Integer i){
+		if(i.intValue() == 1){
+			return true;
+		}
+		return false;
+	}
+	public static boolean int_to_boolean(int i){
+		if(i == 1){
+			return true;
+		}
+		return false;
+	}
 }

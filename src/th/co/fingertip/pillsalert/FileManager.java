@@ -94,4 +94,16 @@ public class FileManager {
 		
 	}
 	
+	public static FileInputStream readFromFile(String name, String directory){
+		FileInputStream file_stream = null;
+		File f = new File(directory, name);
+		try {
+			file_stream = new FileInputStream(f);
+		} catch (FileNotFoundException e) {
+			
+		}
+		
+		return file_stream;
+	}
+	
 }

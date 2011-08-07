@@ -2,5 +2,4 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Test Camera" android:id="@+id/camera_test_activity"></item>
-    
 </menu>
