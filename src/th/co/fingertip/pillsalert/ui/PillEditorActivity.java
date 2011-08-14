@@ -33,6 +33,7 @@ public class PillEditorActivity extends Activity {
 		setContentView(R.layout.pill_editor);
 		
 		with_image = null;
+		pill_bitmap = null;
 		save_pill_button = (Button) findViewById(R.id.save_pill);
 		pill_title = (EditText) findViewById(R.id.pill_title);
 		pill_note = (EditText) findViewById(R.id.pill_note);
@@ -44,7 +45,9 @@ public class PillEditorActivity extends Activity {
 			pill_title.setText( pill_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]));
 			pill_note.setText( pill_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]));
 			with_image = pill_data.getInt(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
-			pill_image_button.setImageBitmap(ImageFactory.get_bitmap(row_id+".PNG"));
+			if(with_image == 1){
+				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(row_id+".PNG"));
+			}
 		}
 		
 		
@@ -83,17 +86,36 @@ public class PillEditorActivity extends Activity {
 				//update pill
 				else{
 					Intent update_pill_intent = new Intent();
-					if(pill_bitmap != null){
-						pill_data.putInt(
-							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-							1
-						);
-						pill_data.putParcelable("image", pill_bitmap); //pill image
-					}else{
-						pill_data.putInt(
-							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-							0
-						);
+					if(with_image == 0 ){ //no image at first
+						if(pill_bitmap != null){
+							pill_data.putInt(
+								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+								1
+							);
+							pill_data.putParcelable("image", pill_bitmap); //pill image
+						}
+						else{
+							pill_data.putInt(
+								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+								0
+							);
+						}
+					}else{ //the image existed
+						//new image
+						if(pill_bitmap != null){
+							pill_data.putInt(
+								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+								1
+							);
+							pill_data.putParcelable("image", pill_bitmap); //pill image
+						}
+						//use existing image
+						else{
+							pill_data.putInt(
+								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+								1
+							);
+						}
 					}
 					pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], row_id); //pill row id
 					update_pill_intent.putExtras(pill_data);

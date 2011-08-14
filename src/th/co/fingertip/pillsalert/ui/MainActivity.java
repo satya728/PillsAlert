@@ -153,8 +153,19 @@ public class MainActivity extends Activity {
 				Long row_id = bundle_data.getLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]);
 				boolean is_updated = pill_database.updateRow(new_pill_data, row_id);
 				if(is_updated && Util.integer_to_boolean(with_image)){
-					Bitmap pill_image = bundle_data.getParcelable("image");				
-					ImageFactory.save_bitmap(pill_image, row_id+".PNG");
+					Bitmap pill_image = null; 
+					try{
+						pill_image = bundle_data.getParcelable("image");
+						if(pill_image == null){
+							Util.put(this, "pill_image == null", Util.LONG_TRACE);
+						}
+						else{
+							ImageFactory.save_bitmap(pill_image, row_id+".PNG");	
+						}
+					}
+					catch(Exception e){
+						Util.put(this, "error while trying to save image", Util.LONG_TRACE);
+					}
 				}
 				
 				break;

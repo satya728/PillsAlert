@@ -50,11 +50,11 @@
 		    android:height="200dp"
 		  />
 		  <Button
-		    android:id="@+id/save_pill"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="@string/save_pill_label"
-		  />
+        android:id="@+id/save_pill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_pill_label"
+      />
     </LinearLayout>
   </ScrollView>
 </LinearLayout>
