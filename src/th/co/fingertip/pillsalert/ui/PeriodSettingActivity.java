@@ -27,6 +27,12 @@ public class PeriodSettingActivity extends ListActivity{
 	PeriodDatabaseAdapter period_database;
 	Cursor period_cursor;
 	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		period_database.close();
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +121,12 @@ public class PeriodSettingActivity extends ListActivity{
 			case R.id.period_setting_option_menu_create_period:
 				Intent create_intent = new Intent(this,PeriodEditorActivity.class);
 				startActivityForResult(create_intent, PillsAlertEnum.Request.PERIOD_CREATE);
-			break;
+				break;
+			case R.id.period_setting_option_menu_go_home:
+				Intent go_home_intent = new Intent(this,PeriodEditorActivity.class);
+				//startActivityForResult(go_home_intent, 1234);
+				startActivity(go_home_intent);
+				break;
 		}
 		return true;
 	}

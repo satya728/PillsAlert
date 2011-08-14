@@ -33,6 +33,15 @@ public class MainActivity extends Activity {
 	SimpleCursorAdapter pill_cursor_adapter;
 	GridView gridview;
 	
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		pill_database.close();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -18,6 +18,8 @@ public class PeriodEditorActivity extends Activity {
 	Button save_button;
 	Long row_id;
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

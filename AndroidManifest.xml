@@ -18,8 +18,11 @@
           <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEdtiorActivity"></activity>  
-      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity"></activity>  
+      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEdtiorActivity">
+      </activity>  
+      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity">
+        
+      </activity>  
       <activity android:name="th.co.fingertip.pillsalert.ui.PillEditorActivity"></activity>
       <service android:name=".TimeService"/>
     </application>
