@@ -2,6 +2,5 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Create New Period" android:id="@+id/period_setting_option_menu_create_period"></item>
-    <item android:title="Go Home" android:id="@+id/period_setting_option_menu_go_home"></item>
     
 </menu>

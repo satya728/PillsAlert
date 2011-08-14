@@ -119,13 +119,8 @@ public class PeriodSettingActivity extends ListActivity{
 		super.onMenuItemSelected(featureId, item);
 		switch(item.getItemId()){
 			case R.id.period_setting_option_menu_create_period:
-				Intent create_intent = new Intent(this,PeriodEditorActivity.class);
+				Intent create_intent = new Intent(this, PeriodEditorActivity.class);
 				startActivityForResult(create_intent, PillsAlertEnum.Request.PERIOD_CREATE);
-				break;
-			case R.id.period_setting_option_menu_go_home:
-				Intent go_home_intent = new Intent(this,PeriodEditorActivity.class);
-				//startActivityForResult(go_home_intent, 1234);
-				startActivity(go_home_intent);
 				break;
 		}
 		return true;
