@@ -33,11 +33,6 @@ public class GalleryActivity extends Activity {
 		gallery2.setAdapter(new ImageSpinnerAdapter(this));
 		gallery2.setDragger(drag_layer1);
 		
-		if (gallery2 == null) {
-			Util.put(this, "y", Util.SHORT_TRACE);
-		} else {
-			Util.put(this, "n", Util.SHORT_TRACE);
-		}
 	}
 
 }
