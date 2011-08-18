@@ -46,10 +46,6 @@ public class PillPeriodActivity extends Activity {
 		
 		period_title = (TextView)findViewById(R.id.period_title);
 		
-		pill_gallery.setAdapter(new ImageSpinnerAdapter(this));
-		period_gallery.setAdapter(new ImageSpinnerAdapter(this));
-		
-		
 		pill_gallery.setDragger(drag_layer);
 		period_gallery.setDragger(drag_layer);
 		
@@ -63,26 +59,27 @@ public class PillPeriodActivity extends Activity {
 		
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
-		
-		period_cursor.moveToFirst();
-		//set period title
-		period_title.setText(
-			period_cursor.getString(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-				)
-			)
-		);
-		//get notification cursor for first period entry
-		notification_cursor = notification_database.selectRowWhere(
-			"period_id = " + 
-			period_cursor.getInt(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-				)	
-			)
-		);
-		
+//		
+//		period_cursor.moveToFirst();
+//		//set period title
+//		period_title.setText(
+//			period_cursor.getString(
+//				period_cursor.getColumnIndex(
+//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
+//				)
+//			)
+//		);
+//		//get notification cursor for first period entry
+//		notification_cursor = notification_database.selectRowWhere(
+//			"period_id = " + 
+//			period_cursor.getInt(
+//				period_cursor.getColumnIndex(
+//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+//				)	
+//			)
+//		);
+//		
+
 		
 //		pill_gallery.setOnDropEnd(new DragContrller(){
 //			@Override
@@ -91,11 +88,12 @@ public class PillPeriodActivity extends Activity {
 //			}
 //		});
 		
+		
 	}
 	
 	private void update_notification(Long period_id, Vector<Long> pill_ids){
 		
 	}
-	
-	
 }
+	
+	

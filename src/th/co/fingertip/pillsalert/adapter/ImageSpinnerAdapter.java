@@ -24,12 +24,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	private boolean adjustable_flag;
 	private Cursor cursor;
 	private int model;
-	
-	private Integer[] int_values = {
-			R.drawable.sample_0, R.drawable.sample_1, R.drawable.sample_2,
-			R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
-			R.drawable.sample_6, R.drawable.sample_7,
-	};
+	private boolean dummy_needed;
 	
 	//private Vector<Integer> image_ids = new Vector<Integer> (Arrays.asList(int_values));
 	private Vector<String> images = new Vector<String>();
@@ -69,7 +64,6 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
 				break;
 			}
-			
 			ids.add(id);
 			String image_name = Long.toString(id) + ".PNG";
 			images.add(image_name);
@@ -82,6 +76,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		gallery_item_background = a.getResourceId(
 				R.styleable.Gallery1_android_galleryItemBackground, 0);
 		a.recycle();
+		dummy_needed = true;
 	}
 	
 	@Override
@@ -104,14 +99,17 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	
 	public boolean addItem(Object object_info) {
 		
+		String pic_name = object_info.toString() + ".PNG";
+		
 		if (!adjustable_flag) {
 			return false;
 		}
 		
-//		String s = object_info.toString();
-//		image_ids.add(int_values[Integer.parseInt(s)]);
-		
-		images.add((Long)object_info + ".PNG");
+		if (!images.contains(pic_name)) {
+			images.add(pic_name);
+		} else {
+			return false;
+		}
 		
 		return true;
 	}
@@ -122,7 +120,13 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		i.setLayoutParams(new Gallery.LayoutParams(150, 150));
 		i.setScaleType(ImageView.ScaleType.FIT_XY);
 		i.setBackgroundResource(gallery_item_background);
-		i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));
+		if (dummy_needed) {
+			i.setImageResource(R.drawable.dummy_pill);
+		} else {
+			i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));
+		}
+		i.setTag(ids.get(position));
+		
 		return i;
 	}
 	
