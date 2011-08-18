@@ -13,15 +13,24 @@
     android:layout_height="fill_parent"
     android:padding="10px"
   >
-  
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text ="Pills" 
+    />
     <th.co.fingertip.pillsalert.dragndrop.DragDropGallery
-        android:id="@+id/gallery2"
+        android:id="@+id/pill_gallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />  
-    
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text ="Period"
+      android:id = "@+id/period_title" 
+    />
     <th.co.fingertip.pillsalert.dragndrop.DragDropGallery
-        android:id="@+id/gallery1"
+        android:id="@+id/period_gallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />

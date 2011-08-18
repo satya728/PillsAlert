@@ -108,6 +108,19 @@ public abstract class DatabaseTemplate {
 		return c;
 	}
 	
+	
+	public Cursor selectRowWhere(String conditions){
+		Cursor c = sqlite_db_instance.query(
+			table_name, 
+			schema,  
+			conditions,
+			null, null, null, null
+		);
+		
+		return c;
+	}
+	
+	
 	/**
      * update existing row in table
      * 
