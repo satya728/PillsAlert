@@ -48,35 +48,36 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		this.cursor = cursor;
 		this.model = model;
 		notification_dummy = false;
-		fillData();
 		if (cursor.getCount() == 0 && model == PillsAlertEnum.Model.NOTIFICATION) {
 			notification_dummy = true;
 			ids.add((long) 0);
 			images.add("");
 		}
-		
+		fillData();
 	}
 	
 	private void fillData() {
-		if (!cursor.isClosed()) {
-			cursor.move(-1);
-		} 
-		while(cursor.moveToNext()) {
-			long id = -1;
-			
-			switch(model) {
-			case PillsAlertEnum.Model.PILL:
-				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
-				pill_dummy_flags.add((Util.integer_to_boolean(cursor.getInt(
-						cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[4])))));
-				break;
-			case PillsAlertEnum.Model.NOTIFICATION:
-				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
-				break;
+		if(cursor.getCount()!=0){
+			if (!cursor.isClosed()) {
+				cursor.move(-1);
+			} 
+			while(cursor.moveToNext()) {
+				long id = -1;
+				
+				switch(model) {
+				case PillsAlertEnum.Model.PILL:
+					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
+					pill_dummy_flags.add((Util.integer_to_boolean(cursor.getInt(
+							cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3])))));
+					break;
+				case PillsAlertEnum.Model.NOTIFICATION:
+					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
+					break;
+				}
+				ids.add(id);
+				String image_name = Long.toString(id) + ".PNG";
+				images.add(image_name);
 			}
-			ids.add(id);
-			String image_name = Long.toString(id) + ".PNG";
-			images.add(image_name);
 		}
 	}
 
@@ -136,7 +137,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 				i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));
 			}
 		} else {
-			if (pill_dummy_flags.get(position)) {
+			if (!pill_dummy_flags.get(position)) {
 				i.setImageResource(R.drawable.dummy_pill);
 			} else {
 				i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));

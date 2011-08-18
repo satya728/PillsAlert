@@ -8,6 +8,7 @@ import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseConnector;
+import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
@@ -78,6 +79,11 @@ public class PillPeriodActivity extends Activity {
 				)	
 			)
 		);
+		
+//		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
+//		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
+//		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
+//		notification_database.insertRow(p);
 		
 		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
 		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
