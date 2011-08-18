@@ -77,7 +77,7 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 			int yOffset, Object dragInfo) {
 		// TODO Auto-generated method stub
 		Util.put(getContext(), "onDrop" + dragInfo.toString(), Util.SHORT_TRACE);
-		image_adapter.addItem(dragInfo);
+		image_adapter.addItem(((View)dragInfo).getTag());
 		image_adapter.notifyDataSetChanged();
 		//assigning DB association here, i think.
 	}

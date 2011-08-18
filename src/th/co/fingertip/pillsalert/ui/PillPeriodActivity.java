@@ -48,7 +48,6 @@ public class PillPeriodActivity extends Activity {
 		period_title = (TextView)findViewById(R.id.period_title);
 		
 		
-		
 		pill_database = new PillDatabaseAdapter(this);
 		period_database = new PeriodDatabaseAdapter(this);
 		notification_database = new NotificationDatabaseAdapter(this);
@@ -87,7 +86,6 @@ public class PillPeriodActivity extends Activity {
 		pill_gallery.setDragger(drag_layer);
 		period_gallery.setDragger(drag_layer);
 		
-		
 //		pill_gallery.setOnDropEnd(new DragContrller(){
 //			@Override
 //			public void onDragEnd(){
@@ -95,11 +93,12 @@ public class PillPeriodActivity extends Activity {
 //			}
 //		});
 		
+		
 	}
 	
 	private void update_notification(Long period_id, Vector<Long> pill_ids){
 		
 	}
-	
-	
 }
+	
+	

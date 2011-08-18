@@ -35,6 +35,8 @@
         android:layout_height="wrap_content"
     />
     
+    
+    
   </LinearLayout>
  
 </th.co.fingertip.pillsalert.dragndrop.DragLayer>
