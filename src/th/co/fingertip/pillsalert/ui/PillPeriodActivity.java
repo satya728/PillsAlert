@@ -2,6 +2,7 @@ package th.co.fingertip.pillsalert.ui;
 
 import java.util.Vector;
 
+import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
@@ -46,8 +47,6 @@ public class PillPeriodActivity extends Activity {
 		
 		period_title = (TextView)findViewById(R.id.period_title);
 		
-		pill_gallery.setDragger(drag_layer);
-		period_gallery.setDragger(drag_layer);
 		
 		pill_database = new PillDatabaseAdapter(this);
 		period_database = new PeriodDatabaseAdapter(this);
@@ -59,27 +58,33 @@ public class PillPeriodActivity extends Activity {
 		
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
-//		
-//		period_cursor.moveToFirst();
-//		//set period title
-//		period_title.setText(
-//			period_cursor.getString(
-//				period_cursor.getColumnIndex(
-//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-//				)
-//			)
-//		);
-//		//get notification cursor for first period entry
-//		notification_cursor = notification_database.selectRowWhere(
-//			"period_id = " + 
-//			period_cursor.getInt(
-//				period_cursor.getColumnIndex(
-//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-//				)	
-//			)
-//		);
-//		
-
+		
+		period_cursor.moveToFirst();
+		//set period title
+		period_title.setText(
+			period_cursor.getString(
+				period_cursor.getColumnIndex(
+					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
+				)
+			)
+		);
+		
+		//get notification cursor for first period entry
+		notification_cursor = notification_database.selectRowWhere(
+			"period_id = " + 
+			period_cursor.getInt(
+				period_cursor.getColumnIndex(
+					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+				)	
+			)
+		);
+		
+		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
+		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
+		
+		
+		pill_gallery.setDragger(drag_layer);
+		period_gallery.setDragger(drag_layer);
 		
 //		pill_gallery.setOnDropEnd(new DragContrller(){
 //			@Override
