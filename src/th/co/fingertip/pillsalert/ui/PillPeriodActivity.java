@@ -2,6 +2,7 @@ package th.co.fingertip.pillsalert.ui;
 
 import java.util.Vector;
 
+import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
@@ -46,12 +47,7 @@ public class PillPeriodActivity extends Activity {
 		
 		period_title = (TextView)findViewById(R.id.period_title);
 		
-		pill_gallery.setAdapter(new ImageSpinnerAdapter(this));
-		period_gallery.setAdapter(new ImageSpinnerAdapter(this));
 		
-		
-		pill_gallery.setDragger(drag_layer);
-		period_gallery.setDragger(drag_layer);
 		
 		pill_database = new PillDatabaseAdapter(this);
 		period_database = new PeriodDatabaseAdapter(this);
@@ -73,6 +69,7 @@ public class PillPeriodActivity extends Activity {
 				)
 			)
 		);
+		
 		//get notification cursor for first period entry
 		notification_cursor = notification_database.selectRowWhere(
 			"period_id = " + 
@@ -82,6 +79,13 @@ public class PillPeriodActivity extends Activity {
 				)	
 			)
 		);
+		
+		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
+		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
+		
+		
+		pill_gallery.setDragger(drag_layer);
+		period_gallery.setDragger(drag_layer);
 		
 		
 //		pill_gallery.setOnDropEnd(new DragContrller(){

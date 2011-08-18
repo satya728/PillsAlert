@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
 	GridView gridview;
 	
 	
-	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
