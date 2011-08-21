@@ -2,8 +2,10 @@ package th.co.fingertip.pillsalert.ui;
 
 import java.util.Vector;
 
+import th.co.fingertip.pillsalert.Main;
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
+import th.co.fingertip.pillsalert.TimeService;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
@@ -13,7 +15,9 @@ import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
+import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.sax.TextElementListener;
@@ -105,6 +109,25 @@ public class PillPeriodActivity extends Activity {
 	private void update_notification(Long period_id, Vector<Long> pill_ids){
 		
 	}
+
+	@Override
+	public void onBackPressed() {
+		//move to first
+		if (period_cursor.getCount()!=0) {
+			period_cursor.move(-1);
+			for (;period_cursor.moveToNext();) {
+				String st = period_cursor.getString(period_cursor.getColumnIndex(
+						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2]));
+				Util.put(this, "start service" + st , Util.SHORT_TRACE);
+				
+				startService(new Intent(this, TimeService.class));
+			}
+		}
+
+		super.onBackPressed();
+	}
+	
+	
 }
 	
 	
