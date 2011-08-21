@@ -61,8 +61,22 @@ public class PillPeriodActivity extends Activity {
 		period_database.connect();
 		notification_database.connect();
 		
+		
+		
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
+		notification_cursor = notification_database.selectRow(null);
+		if(pill_cursor.getCount()==0){
+			fill_dummy_pill();
+		}
+		if(period_cursor.getCount()==0){
+			fill_dummy_period();
+		}
+		if(notification_cursor.getCount()==0){
+			fill_dummy_notification();
+		}
+		
+		
 		
 		period_cursor.moveToFirst();
 		//set period title
@@ -74,7 +88,7 @@ public class PillPeriodActivity extends Activity {
 			)
 		);
 		
-		fill_dummy_notification();
+		
 		
 		//get notification cursor for first period entry
 		notification_cursor = notification_database.selectRowWhere(
@@ -106,6 +120,19 @@ public class PillPeriodActivity extends Activity {
 		
 	}
 	
+	private void fill_dummy_pill(){
+		Parameters p = new Parameters(PillsAlertEnum.Model.PILL);
+		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[1], "Mypill1");
+		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[2], "mypill1 note");
+		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[3], "1.PNG");
+		pill_database.insertRow(p);
+	}
+	private void fill_dummy_period(){
+		Parameters p = new Parameters(PillsAlertEnum.Model.PERIOD);
+		p.put(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1], "Morning");
+		p.put(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2], "11:18");
+		period_database.insertRow(p);
+	}
 	private void fill_dummy_notification() {
 		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
 		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");

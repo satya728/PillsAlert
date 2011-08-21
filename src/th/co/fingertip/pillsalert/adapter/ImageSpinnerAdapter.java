@@ -118,7 +118,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		i.setScaleType(ImageView.ScaleType.FIT_XY);
 		i.setBackgroundResource(gallery_item_background);
 		String file_name = images.get(position);
-		if (file_name.equals(DUMMY)) {
+		if (file_name.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)) {
 			i.setImageResource(R.drawable.dummy_pill);
 		} else {
 			i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));
