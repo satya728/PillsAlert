@@ -59,7 +59,7 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 			return false;
 		}
 		Util.put(getContext(), "long click at:" + position, Util.SHORT_TRACE);
-		dragger_controller.startDrag(view, this, position, DragController.DRAG_ACTION_MOVE);
+		dragger_controller.startDrag(view, this, view , DragController.DRAG_ACTION_MOVE);
 		
 		return true;
 	}
@@ -76,7 +76,9 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 	public void onDrop(DragSource source, int x, int y, int xOffset,
 			int yOffset, Object dragInfo) {
 		// TODO Auto-generated method stub
+		String ty = dragInfo.getClass().toString();
 		Util.put(getContext(), "onDrop" + dragInfo.toString(), Util.SHORT_TRACE);
+		
 		image_adapter.addItem(((View)dragInfo).getTag());
 		image_adapter.notifyDataSetChanged();
 		//assigning DB association here, i think.
