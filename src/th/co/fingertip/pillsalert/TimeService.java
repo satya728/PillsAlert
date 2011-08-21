@@ -12,6 +12,11 @@ public class TimeService extends Service {
 	private Timer timer;
 	private long delay;
 	
+	public TimeService() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public class RemindTask extends TimerTask {
 		
 		public void run() {
