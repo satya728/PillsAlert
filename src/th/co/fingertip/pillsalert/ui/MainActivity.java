@@ -65,10 +65,10 @@ public class MainActivity extends Activity {
 					DatabaseConfiguration.PILL_SCHEMA_KEYS[2], 
 					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]))
 				);
-				Integer with_image = pill_cursor.getInt(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
-				pill_data.putInt(
+				String image_filename = pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
+				pill_data.putString(
 					DatabaseConfiguration.PILL_SCHEMA_KEYS[3], 
-					pill_cursor.getInt(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]))
+					image_filename
 				);
 				
 				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		Bundle bundle_data = data.getExtras();
 		Parameters new_pill_data = new Parameters(PillsAlertEnum.Model.PILL);
-		Integer with_image = null;
+		String pill_image = null;
 		
 		new_pill_data.put(
 			DatabaseConfiguration.PILL_SCHEMA_KEYS[1],
@@ -143,37 +143,32 @@ public class MainActivity extends Activity {
 			DatabaseConfiguration.PILL_SCHEMA_KEYS[2],
 			bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2])
 		);
-		with_image =bundle_data.getInt(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
+		pill_image =bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
 		new_pill_data.put(
 			DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-			with_image
+			pill_image
 		);
+		Bitmap pill_image_bitmap = bundle_data.getParcelable("image_bitmap");
 		Util.put(this, "result code = " + resultCode, Util.LONG_TRACE);
 		switch(resultCode){
 			case PillsAlertEnum.Result.PILL_CREATE:
 				Long new_pill_id = pill_database.insertRow(new_pill_data);
-				if((new_pill_id != -1) && Util.integer_to_boolean(with_image) ){
-					Bitmap pill_image = bundle_data.getParcelable("image");				
-					ImageFactory.save_bitmap(pill_image, new_pill_id+".PNG");
+				
+				if((new_pill_id != -1) && (pill_image_bitmap!=null) ){
+					Util.put(this, "sefefsdfsd", Util.SHORT_TRACE);
+					ImageFactory.save_bitmap(pill_image_bitmap, new_pill_id+".PNG");
+					Parameters new_pill_image = new Parameters(PillsAlertEnum.Model.PILL);
+					new_pill_image.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[3], new_pill_id+".PNG");
+					pill_database.updateRow(new_pill_image,new_pill_id);
 				}
+				
 				break;
 			case PillsAlertEnum.Result.PILL_UPDATE:
 				Long row_id = bundle_data.getLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]);
 				boolean is_updated = pill_database.updateRow(new_pill_data, row_id);
-				if(is_updated && Util.integer_to_boolean(with_image)){
-					Bitmap pill_image = null; 
-					try{
-						pill_image = bundle_data.getParcelable("image");
-						if(pill_image == null){
-							Util.put(this, "pill_image == null", Util.LONG_TRACE);
-						}
-						else{
-							ImageFactory.save_bitmap(pill_image, row_id+".PNG");	
-						}
-					}
-					catch(Exception e){
-						Util.put(this, "error while trying to save image", Util.LONG_TRACE);
-					}
+				
+				if(is_updated && (pill_image_bitmap!=null)){
+					ImageFactory.save_bitmap(pill_image_bitmap, row_id+".PNG");
 				}
 				
 				break;

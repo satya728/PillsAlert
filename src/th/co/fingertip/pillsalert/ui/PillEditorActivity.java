@@ -25,14 +25,14 @@ public class PillEditorActivity extends Activity {
 	ImageButton pill_image_button;
 	Bitmap pill_bitmap;
 	Long row_id;
-	Integer with_image;
+	String image;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pill_editor);
 		
-		with_image = null;
+		image = null;
 		pill_bitmap = null;
 		save_pill_button = (Button) findViewById(R.id.save_pill);
 		pill_title = (EditText) findViewById(R.id.pill_title);
@@ -44,8 +44,8 @@ public class PillEditorActivity extends Activity {
 			row_id = pill_data.getLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]);
 			pill_title.setText( pill_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]));
 			pill_note.setText( pill_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]));
-			with_image = pill_data.getInt(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
-			if(with_image == 1){
+			image = pill_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
+			if(image != PillsAlertEnum.FileName.PILL_DUMMY_FILENAME){
 				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(row_id+".PNG"));
 			}
 		}
@@ -69,15 +69,15 @@ public class PillEditorActivity extends Activity {
 				if(row_id == null){
 					Intent create_pill_intent = new Intent();
 					if(pill_bitmap != null){
-						pill_data.putInt(
+						pill_data.putString(
 							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-							1
+							""
 						);
-						pill_data.putParcelable("image", pill_bitmap); //pill image
+						pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 					}else{
-						pill_data.putInt(
+						pill_data.putString(
 							DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-							0
+							PillsAlertEnum.FileName.PILL_DUMMY_FILENAME
 						);
 					}
 					create_pill_intent.putExtras(pill_data);
@@ -86,35 +86,33 @@ public class PillEditorActivity extends Activity {
 				//update pill
 				else{
 					Intent update_pill_intent = new Intent();
-					if(with_image == 0 ){ //no image at first
+					if(image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME) ){ //no image at first
 						if(pill_bitmap != null){
-							pill_data.putInt(
+							pill_data.putString(
 								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-								1
+								row_id+".PNG"
 							);
-							pill_data.putParcelable("image", pill_bitmap); //pill image
+							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						else{
-							pill_data.putInt(
-								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-								0
-							);
+//							pill_data.putInt(
+//								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
+//								0
+//							);
+							pill_data.putParcelable("image_bitmap", null);
 						}
 					}else{ //the image existed
 						//new image
 						if(pill_bitmap != null){
-							pill_data.putInt(
+							pill_data.putString(
 								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-								1
+								row_id+".PNG"
 							);
-							pill_data.putParcelable("image", pill_bitmap); //pill image
+							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						//use existing image
 						else{
-							pill_data.putInt(
-								DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-								1
-							);
+							pill_data.putParcelable("image_bitmap", null);
 						}
 					}
 					pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], row_id); //pill row id
