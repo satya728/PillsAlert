@@ -96,14 +96,16 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		return ids.get(position);
 	}
 	
-	public boolean addItem(Object object_info) {
-		String file_name = object_info.toString();
+	public boolean addItem(View object_info) {
+		Long id = (Long) object_info.getTag(R.id.image_id);
+		String file_name = (String) object_info.getTag(R.id.image_name);
 		if (!adjustable_flag) {
 			return false;
 		}
-		
+
 		if (!images.contains(file_name)) {
 			images.add(file_name);
+			ids.add(id);			
 		} else {
 			return false;
 		}
@@ -123,7 +125,8 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		} else {
 			i.setImageBitmap(ImageFactory.get_bitmap(images.get(position)));
 		}
-		i.setTag(file_name);
+		i.setTag(R.id.image_id, ids.get(position));
+		i.setTag(R.id.image_name, file_name);
 		return i;
 	}
 	

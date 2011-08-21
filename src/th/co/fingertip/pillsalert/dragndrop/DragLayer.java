@@ -177,7 +177,7 @@ public class DragLayer extends FrameLayout implements DragController {
         mShouldDrop = true;
         mOriginator = v;
         mDragSource = source;
-        mDragInfo = v.getTag();
+        mDragInfo = v;
 
         mEnteredRegion = false;
 

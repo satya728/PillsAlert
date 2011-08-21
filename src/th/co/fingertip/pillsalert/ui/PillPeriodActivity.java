@@ -66,19 +66,26 @@ public class PillPeriodActivity extends Activity {
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
 		notification_cursor = notification_database.selectRow(null);
-		if(pill_cursor.getCount()==0){
-			fill_dummy_pill();
-		}
-		if(period_cursor.getCount()==0){
-			fill_dummy_period();
-		}
-		if(notification_cursor.getCount()==0){
-			fill_dummy_notification();
-		}
 		
+//		if(pill_cursor.getCount()==0){
+//			fill_dummy_pill();
+//		}
+//		if(period_cursor.getCount()==0){
+//			fill_dummy_period();
+//		}
+		//if(notification_cursor.getCount()==0){
+			fill_dummy_notification();
+		//}
+			int xxx = notification_cursor.getCount();
 		
 		
 		period_cursor.moveToFirst();
+		int aa = period_cursor.getInt(
+				period_cursor.getColumnIndex(
+						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+					)	
+				);
+		int zz = aa+10;
 		//set period title
 		period_title.setText(
 			period_cursor.getString(
@@ -87,8 +94,6 @@ public class PillPeriodActivity extends Activity {
 				)
 			)
 		);
-		
-		
 		
 		//get notification cursor for first period entry
 		notification_cursor = notification_database.selectRowWhere(
@@ -99,9 +104,6 @@ public class PillPeriodActivity extends Activity {
 				)	
 			)
 		);
-		
-
-		
 		
 		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
 		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
@@ -134,10 +136,11 @@ public class PillPeriodActivity extends Activity {
 		period_database.insertRow(p);
 	}
 	private void fill_dummy_notification() {
+		notification_database.deleteRow(1l);
 		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1.PNG");
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], 1);
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], 1);
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
 		notification_database.insertRow(p);
 	}
 
