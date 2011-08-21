@@ -3,18 +3,19 @@ package th.co.fingertip.pillsalert;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
-public class TimeService extends Service {
+public class TimeService extends IntentService {
 	private Timer timer;
 	private long delay;
 	
-	public TimeService() {
-		super();
-		// TODO Auto-generated constructor stub
+	public TimeService(int sec) {
+		super(null);
+		this.delay = sec;
 	}
 
 	public class RemindTask extends TimerTask {
@@ -53,6 +54,12 @@ public class TimeService extends Service {
 		
 		super.onDestroy();
 		Toast.makeText(this, "Service is destroyed ...", Toast.LENGTH_SHORT).show();
+		
+	}
+
+	@Override
+	protected void onHandleIntent(Intent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 
