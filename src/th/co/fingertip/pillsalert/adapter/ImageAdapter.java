@@ -1,6 +1,7 @@
 package th.co.fingertip.pillsalert.adapter;
 
 import th.co.fingertip.pillsalert.FileManager;
+import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
@@ -21,7 +22,7 @@ public class ImageAdapter extends BaseAdapter {
 	public String[] images;
 	public Long[] ids;
 	public Cursor pill_cursor;
-	public int[] with_images;
+	
 	
 	//public ImageAdapter (Context context, String[] images) {
 	public ImageAdapter (Context context, Cursor pill_cursor) {
@@ -34,20 +35,16 @@ public class ImageAdapter extends BaseAdapter {
 	private void fill_data(){
 		images = new String[pill_cursor.getCount()];
 		ids = new Long[pill_cursor.getCount()];
-		with_images = new int[pill_cursor.getCount()];
 		pill_cursor.moveToFirst();
 		int i = 0;
 		do{
 			ids[i] = pill_cursor.getLong(
 				pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0])
 			);
-			int with_image = pill_cursor.getInt(
+		
+			images[i] = pill_cursor.getString(
 				pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3])
 			);
-			
-			images[i] = ids[i].toString()+".PNG";
-			with_images[i] = with_image;
-			
 			i = i+1;
 		}while(pill_cursor.moveToNext());
 	}
@@ -82,7 +79,7 @@ public class ImageAdapter extends BaseAdapter {
 			image_view = (ImageView) convert_view;
 		}
 //		image_view.setImageResource(image_ids[position]);
-		if(with_images[position] == 1){
+		if(!images[position].equals( PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
 			image_view.setImageBitmap(ImageFactory.get_bitmap(images[position]));
 		}
 		else{

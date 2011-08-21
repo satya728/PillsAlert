@@ -80,10 +80,12 @@ public class PillPeriodActivity extends Activity {
 			)
 		);
 		
-//		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-//		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
-//		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
-//		notification_database.insertRow(p);
+
+		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1.PNG");
+		notification_database.insertRow(p);
 		
 		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
 		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
