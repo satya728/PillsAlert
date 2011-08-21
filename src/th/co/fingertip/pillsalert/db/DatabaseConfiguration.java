@@ -2,7 +2,7 @@ package th.co.fingertip.pillsalert.db;
 
 public class DatabaseConfiguration {
 	public static String DB_NAME = "pillsalert";
-	public static int DB_VERSION = 2;
+	public static int DB_VERSION = 3;
 	
 	//note table
 	public static String 	PILL_TABLE_NAME 				= "pills";
@@ -18,7 +18,8 @@ public class DatabaseConfiguration {
 	public static String 	NOTIFICATION_CREATE_STATEMENT 	= "create table notifications ("+
 															  "_id integer primary key autoincrement, "+
 															  "pill_id integer not null, "+
-															  "period_id integer not null);";
+															  "period_id integer not null, " +
+															  "image text not null);";
 	
 	public static String 	PERIOD_TABLE_NAME				= "periods";
 	public static String[]  PERIOD_SCHEMA_KEYS				= {"_id","title","time"};

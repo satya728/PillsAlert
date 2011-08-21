@@ -32,7 +32,10 @@ public class DatabaseConnector extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.w("DatabaseConnector", "Upgrading database from version " + oldVersion + " to "
                 + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + table_name);
+        //db.execSQL("DROP TABLE IF EXISTS " + table_name);
+		db.execSQL("DROP TABLE IF EXISTS pills");
+		db.execSQL("DROP TABLE IF EXISTS periods");
+		db.execSQL("DROP TABLE IF EXISTS notifications");
         onCreate(db);
 	}
 

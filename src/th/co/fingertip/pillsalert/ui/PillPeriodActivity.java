@@ -70,6 +70,8 @@ public class PillPeriodActivity extends Activity {
 			)
 		);
 		
+		fill_dummy_notification();
+		
 		//get notification cursor for first period entry
 		notification_cursor = notification_database.selectRowWhere(
 			"period_id = " + 
@@ -81,11 +83,7 @@ public class PillPeriodActivity extends Activity {
 		);
 		
 
-		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1.PNG");
-		notification_database.insertRow(p);
+		
 		
 		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
 		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
@@ -104,6 +102,14 @@ public class PillPeriodActivity extends Activity {
 		
 	}
 	
+	private void fill_dummy_notification() {
+		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], "1");
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1");
+		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], "1.PNG");
+		notification_database.insertRow(p);
+	}
+
 	private void update_notification(Long period_id, Vector<Long> pill_ids){
 		
 	}
