@@ -23,9 +23,10 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	private boolean adjustable_flag;
 	private Cursor cursor;
 	private int model;
-
-	private Vector<String> images = new Vector<String>();
-	private Vector<Long> ids = new Vector<Long>();
+	
+	public Long period_id;
+	public Vector<String> images = new Vector<String>();
+	public Vector<Long> ids = new Vector<Long>();
 	
 	public ImageSpinnerAdapter (Context context) {
 		init(context);
@@ -44,24 +45,40 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		fillData();
 	}
 	
+	public ImageSpinnerAdapter (Context context, boolean flag, Cursor cursor, Long period_id, int model) {
+		init(context);
+		adjustable_flag = flag;
+		this.cursor = cursor;
+		this.model = model;
+		this.period_id = period_id;
+		fillData();
+	}
+	
 	private void fillData() {
-		
-		for (cursor.moveToFirst(); cursor.isLast(); cursor.moveToNext()) {
-			long id = -1;	
-			switch(model) {
-			case PillsAlertEnum.Model.PILL:
-				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
-				break;
-			case PillsAlertEnum.Model.NOTIFICATION:
-				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
-				break;
+		if (cursor.getCount() != 0) {
+			for (cursor.moveToFirst(); cursor.isLast(); cursor.moveToNext()) {
+				long id = -1;	
+				switch(model) {
+				case PillsAlertEnum.Model.PILL:
+					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
+					break;
+				case PillsAlertEnum.Model.NOTIFICATION:
+					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
+					break;
+				}
+				ids.add(id);
+				String image_name = cursor.getString(cursor.getColumnIndex
+						(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
+				images.add(image_name);
 			}
-			ids.add(id);
-			String image_name = cursor.getString(cursor.getColumnIndex
-					(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
-			images.add(image_name);
+		} 
+		else {
+			if(model == PillsAlertEnum.Model.NOTIFICATION) {
+				//fill dummy 
+				ids.add(-1L);
+				images.add(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
+			}
 		}
-		
 		cursor.close();
 	}
 
@@ -97,7 +114,10 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		if (!adjustable_flag) {
 			return false;
 		}
-
+		if(model == PillsAlertEnum.Model.NOTIFICATION  && ids.contains(-1L) ){
+			images.clear();
+			ids.clear();
+		}
 		if (!images.contains(file_name)) {
 			images.add(file_name);
 			ids.add(id);			

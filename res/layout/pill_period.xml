@@ -4,38 +4,56 @@
   android:layout_width="fill_parent" 
   android:layout_height="fill_parent"
   android:gravity="center"
-  android:id="@+id/drag_layer"
-> 
+  android:id="@+id/drag_layer"> 
 
   <LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10px"
-  >
+    android:padding="10px">
+    
     <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text ="Pills" 
-    />
+      android:text ="Pills"/>
+      
     <th.co.fingertip.pillsalert.dragndrop.DragDropGallery
         android:id="@+id/pill_gallery"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-    />  
+        android:layout_height="wrap_content"/>
+          
     <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:text ="Period"
-      android:id = "@+id/period_title" 
-    />
-    <th.co.fingertip.pillsalert.dragndrop.DragDropGallery
-        android:id="@+id/period_gallery"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        
-    />
+      android:id = "@+id/period_title"/>
+      
+    <LinearLayout
+      android:orientation="horizontal"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+      
+      	<Button
+	      	android:id = "@+id/previous_period_button"
+	      	android:layout_width = "wrap_content"
+	      	android:layout_height = "wrap_content"
+	      	android:text = "Prev"
+	      	android:layout_weight="1"/>
+      	
+	   	<th.co.fingertip.pillsalert.dragndrop.DragDropGallery
+	        android:id="@+id/period_gallery"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="2"/>
+	    
+	    <Button
+	      	android:id = "@+id/next_period_button"
+	      	android:layout_width = "wrap_content"
+	      	android:layout_height = "wrap_content"
+	      	android:text = "Next"
+	      	android:layout_weight="1" />
     
+    </LinearLayout>
     
     
   </LinearLayout>
