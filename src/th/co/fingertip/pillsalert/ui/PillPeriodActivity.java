@@ -68,12 +68,7 @@ public class PillPeriodActivity extends Activity {
 		
 		
 		period_cursor.moveToFirst();
-		int aa = period_cursor.getInt(
-				period_cursor.getColumnIndex(
-						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-					)	
-				);
-		int zz = aa+10;
+		
 		//set period title
 		period_title.setText(
 			period_cursor.getString(
