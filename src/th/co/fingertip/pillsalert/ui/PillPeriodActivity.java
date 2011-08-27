@@ -76,8 +76,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
 		notification_cursor = notification_database.selectRow(null);
-		
-		
+
 		period_cursor.moveToFirst();
 		//variable
 		n_period = period_cursor.getCount();
@@ -149,6 +148,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	private void update_notification(ImageSpinnerAdapter adapter){
 		
 		Iterator<Long> iterator = adapter.ids.iterator();
+
 		int i = 0;
 		while(iterator.hasNext()){
 			Long id = (Long)iterator.next();

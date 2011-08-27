@@ -1,5 +1,6 @@
 package th.co.fingertip.pillsalert.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,6 +27,21 @@ public class DatabaseConnector extends SQLiteOpenHelper {
 		db.execSQL(DatabaseConfiguration.PILL_CREATE_STATEMENT);
 		db.execSQL(DatabaseConfiguration.NOTIFICATION_CREATE_STATEMENT);
 		db.execSQL(DatabaseConfiguration.PERIOD_CREATE_STATEMENT);
+		add_dummy_data(db);
+	}
+
+	private void add_dummy_data(SQLiteDatabase db) {
+		db.execSQL("delete from pills where _id>0");
+		db.execSQL("delete from periods where _id>0");
+		db.execSQL("delete from notifications where _id>0");
+		db.execSQL("insert into pills(_id,title,note,image) values(1,'first pill','f','1.PNG')");
+		db.execSQL("insert into pills(_id,title,note,image) values(2,'first pill','f','dummy_pill.png')");
+		
+		ContentValues cv = new ContentValues();
+		cv.put("_id", 1);
+		cv.put("title", "morning");
+		cv.put("time", "14-45");
+		db.insert("periods", null,cv); 
 	}
 
 	@Override
