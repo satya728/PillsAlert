@@ -1,5 +1,6 @@
 package th.co.fingertip.pillsalert.ui;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import th.co.fingertip.pillsalert.Main;
@@ -61,22 +62,9 @@ public class PillPeriodActivity extends Activity {
 		period_database.connect();
 		notification_database.connect();
 		
-		
-		
 		pill_cursor = pill_database.selectRow(null);
 		period_cursor = period_database.selectRow(null);
 		notification_cursor = notification_database.selectRow(null);
-		
-//		if(pill_cursor.getCount()==0){
-//			fill_dummy_pill();
-//		}
-//		if(period_cursor.getCount()==0){
-//			fill_dummy_period();
-//		}
-		//if(notification_cursor.getCount()==0){
-			fill_dummy_notification();
-		//}
-			int xxx = notification_cursor.getCount();
 		
 		
 		period_cursor.moveToFirst();
@@ -96,6 +84,11 @@ public class PillPeriodActivity extends Activity {
 		);
 		
 		//get notification cursor for first period entry
+		Long period_id = period_cursor.getLong(
+			period_cursor.getColumnIndex(
+				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+			)	
+		); 
 		notification_cursor = notification_database.selectRowWhere(
 			"period_id = " + 
 			period_cursor.getInt(
@@ -106,19 +99,11 @@ public class PillPeriodActivity extends Activity {
 		);
 		
 		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
-		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,PillsAlertEnum.Model.NOTIFICATION));
+		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,period_id,PillsAlertEnum.Model.NOTIFICATION));
 		
 		
 		pill_gallery.setDragger(drag_layer);
 		period_gallery.setDragger(drag_layer);
-		
-//		pill_gallery.setOnDropEnd(new DragContrller(){
-//			@Override
-//			public void onDragEnd(){
-//				
-//			}
-//		});
-		
 		
 	}
 	
@@ -144,8 +129,18 @@ public class PillPeriodActivity extends Activity {
 		notification_database.insertRow(p);
 	}
 
-	private void update_notification(Long period_id, Vector<Long> pill_ids){
-		
+	private void update_notification(Long period_id, Vector<Long> pill_ids, Vector<String> images){
+		Iterator<Long> iterator = pill_ids.iterator();
+		int i = 0;
+		while(iterator.hasNext()){
+			Long id = (Long)iterator.next();
+			Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
+			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
+			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], period_id);
+			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], images.get(0));
+			notification_database.insertRow(p);
+			i = i + 1;
+		}
 	}
 
 	@Override
