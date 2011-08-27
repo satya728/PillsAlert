@@ -25,7 +25,6 @@
       </activity> 
       <activity android:name="th.co.fingertip.pillsalert.ui.PillEditorActivity"></activity>
       <activity android:name="th.co.fingertip.pillsalert.ui.PillPeriodActivity">
-        
       </activity>
       <service android:name=".TimeService"/>
     </application>

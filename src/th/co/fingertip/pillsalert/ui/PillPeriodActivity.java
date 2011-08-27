@@ -80,6 +80,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		period_cursor.moveToFirst();
 		//variable
 		n_period = period_cursor.getCount();
+		int n_pill = pill_cursor.getColumnCount();
 		
 		//set period title
 		period_title.setText(
@@ -186,22 +187,28 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		switch (resource_name) {
 		case R.id.previous_period_button:
-			Util.put(getApplicationContext(), "previous period", Util.SHORT_TRACE);
+
 			update_notification(period_spinner);
 			
 			if (current_period_id - 1 < 0) {
 				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
 			} 
 			else {
-				updatePeriodSpinner(current_period_id - 1);
+				
+				String new_title = period_cursor.getString(
+						period_cursor.getColumnIndex(
+							DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
+						) );
+				pill_spinner.updatePeriodSpinner(period_cursor);
 			}
+			
+			
 			
 		break;
 		
 		case R.id.next_period_button:
-			Util.put(getApplicationContext(), "next period", Util.SHORT_TRACE);
+			
 			update_notification(period_spinner);
-			updatePeriodSpinner(current_period_id + 1);
 			
 			if (current_period_id + 1 >= n_period ) {
 				Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
@@ -215,10 +222,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	public void updatePeriodSpinner(long id) {
-		
-		
-	}
+
 	
 }
 	

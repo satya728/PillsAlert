@@ -52,11 +52,13 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		this.model = model;
 		this.period_id = period_id;
 		fillData();
+		int cnt = images.size();
+		int xx = cnt;
 	}
 	
 	private void fillData() {
 		if (cursor.getCount() != 0) {
-			for (cursor.moveToFirst(); cursor.isLast(); cursor.moveToNext()) {
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 				long id = -1;	
 				switch(model) {
 				case PillsAlertEnum.Model.PILL:
@@ -145,6 +147,10 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		return i;
 	}
 	
+	public void updatePeriodSpinner(Cursor cursor) {
+		
+		
+	}
 	
 	
 }
