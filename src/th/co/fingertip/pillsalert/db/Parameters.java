@@ -63,6 +63,12 @@ public class Parameters {
 						(Integer)tmp_object
 					);
 				}
+				else if(tmp_object.getClass() == Long.class){
+					content_values.put(
+						column_name, 
+						(Long)tmp_object
+					);
+				}
 				else if(tmp_object.getClass() == Boolean.class){
 					content_values.put(
 						column_name, 

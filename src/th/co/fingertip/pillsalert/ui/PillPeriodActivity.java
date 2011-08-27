@@ -66,40 +66,6 @@ public class PillPeriodActivity extends Activity {
 		period_cursor = period_database.selectRow(null);
 		notification_cursor = notification_database.selectRow(null);
 		
-		
-		period_cursor.moveToFirst();
-		
-		//set period title
-		period_title.setText(
-			period_cursor.getString(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-				)
-			)
-		);
-		
-		//get notification cursor for first period entry
-		Long period_id = period_cursor.getLong(
-			period_cursor.getColumnIndex(
-				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-			)	
-		); 
-		notification_cursor = notification_database.selectRowWhere(
-			"period_id = " + 
-			period_cursor.getInt(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-				)	
-			)
-		);
-		
-		pill_gallery.setAdapter(new ImageSpinnerAdapter(this,false,pill_cursor,PillsAlertEnum.Model.PILL));
-		period_gallery.setAdapter(new ImageSpinnerAdapter(this,true,notification_cursor,period_id,PillsAlertEnum.Model.NOTIFICATION));
-		
-		
-		pill_gallery.setDragger(drag_layer);
-		period_gallery.setDragger(drag_layer);
-		
 	}
 	
 	private void fill_dummy_pill(){
@@ -124,7 +90,21 @@ public class PillPeriodActivity extends Activity {
 		notification_database.insertRow(p);
 	}
 
-	private void update_notification(Long period_id, Vector<Long> pill_ids, Vector<String> images){
+	private void test_update_notification(){
+		Long period_id = 1l;
+		Vector<Long> pill_ids = new Vector<Long>();
+		pill_ids.add(11l);
+		pill_ids.add(12l);
+		pill_ids.add(13l);
+		Vector<String> images = new Vector<String>();
+		images.add("11.PNG");
+		images.add("12.PNG");
+		images.add("13.PNG");
+		
+		updateNotification(period_id, pill_ids, images);
+	}
+	
+	private void updateNotification(Long period_id, Vector<Long> pill_ids, Vector<String> images){
 		Iterator<Long> iterator = pill_ids.iterator();
 		int i = 0;
 		while(iterator.hasNext()){
@@ -132,8 +112,9 @@ public class PillPeriodActivity extends Activity {
 			Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
 			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
 			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], period_id);
-			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], images.get(0));
-			notification_database.insertRow(p);
+			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], images.get(i));
+			long ax= notification_database.insertRow(p);
+			ax = ax+10;
 			i = i + 1;
 		}
 	}
