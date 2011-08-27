@@ -1,6 +1,9 @@
 package th.co.fingertip.pillsalert.util;
 
+import java.util.Vector;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.widget.Toast;
 
 public class Util {
@@ -20,5 +23,15 @@ public class Util {
 			return true;
 		}
 		return false;
+	}
+	public static Vector<Long> flatten_id(Cursor c){
+		if(c.getCount()!=0){
+			Vector<Long> f_vector = new Vector<Long>();
+			for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+				f_vector.add(c.getLong(0));
+			}
+			return f_vector;
+		}
+		return null;
 	}
 }
