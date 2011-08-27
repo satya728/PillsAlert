@@ -123,6 +123,10 @@ public class MainActivity extends Activity {
 				Intent period_setting_intent = new Intent(this, PeriodSettingActivity.class);
 				startActivity(period_setting_intent);
 				break;
+			case R.id.main_assign_period:
+				Intent assign_period_intent = new Intent(this, PillPeriodActivity.class);
+				startActivity(assign_period_intent);
+				break;
 		}
 		return true;
 	}

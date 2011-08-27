@@ -117,7 +117,7 @@ public class Pill {
 		if(cursor.getCount() != 0 ){
 			Pill[] results = new Pill[cursor.getCount()];
 			
-			for(cursor.moveToFirst(); !cursor.isLast(); cursor.moveToNext()){
+			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 				results[cursor.getPosition()] = new Pill(cursor);
 			}
 			return results;

@@ -3,4 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Add Pill" android:id="@+id/main_add_pill"></item>
     <item android:title="Period Setting" android:id="@+id/main_set_period"></item>
+    <item android:title="Assign Period" android:id="@+id/main_assign_period"></item>
 </menu>

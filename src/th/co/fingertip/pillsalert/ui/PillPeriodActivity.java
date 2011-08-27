@@ -155,7 +155,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 			Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
 			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
 			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], adapter.period_id);
-			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], adapter.images.get(0));
+			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], adapter.images.get(i));
 			notification_database.insertRow(p);
 			i = i + 1;
 		}
