@@ -18,18 +18,14 @@ import android.widget.ImageView;
 
 public class ImageSpinnerAdapter extends BaseAdapter {
 
-	private String DUMMY = "dummy_pill.PNG";
-	
 	private Context context;
 	int gallery_item_background;
 	private boolean adjustable_flag;
 	private Cursor cursor;
 	private int model;
 
-	//private Vector<Integer> image_ids = new Vector<Integer> (Arrays.asList(int_values));
 	private Vector<String> images = new Vector<String>();
 	private Vector<Long> ids = new Vector<Long>();
-	//private Vector<Integer> image_id = new Vector<Integer>();
 	
 	public ImageSpinnerAdapter (Context context) {
 		init(context);
@@ -49,24 +45,23 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	}
 	
 	private void fillData() {
-		if(cursor.getCount()!= 0){
-			
-			for (cursor.move(-1);cursor.moveToNext();) {
-				long id = -1;	
-				switch(model) {
-				case PillsAlertEnum.Model.PILL:
-					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
-					break;
-				case PillsAlertEnum.Model.NOTIFICATION:
-					id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
-					break;
-				}
-				ids.add(id);
-				String image_name = cursor.getString(cursor.getColumnIndex
-						(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
-				images.add(image_name);
+		
+		for (cursor.moveToFirst(); cursor.isLast(); cursor.moveToNext()) {
+			long id = -1;	
+			switch(model) {
+			case PillsAlertEnum.Model.PILL:
+				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]));
+				break;
+			case PillsAlertEnum.Model.NOTIFICATION:
+				id = cursor.getInt(cursor.getColumnIndex(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1]));
+				break;
 			}
+			ids.add(id);
+			String image_name = cursor.getString(cursor.getColumnIndex
+					(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
+			images.add(image_name);
 		}
+		
 		cursor.close();
 	}
 

@@ -2,14 +2,12 @@ package th.co.fingertip.pillsalert.ui;
 
 import java.util.Vector;
 
-import th.co.fingertip.pillsalert.Main;
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.TimeService;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
-import th.co.fingertip.pillsalert.db.NotificationDatabaseConnector;
 import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
@@ -20,10 +18,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.sax.TextElementListener;
 import android.widget.TextView;
+import android.view.*;
 
-public class PillPeriodActivity extends Activity {
+public class PillPeriodActivity extends Activity implements View.OnClickListener {
 
 	
 	private DragDropGallery pill_gallery;
@@ -76,16 +74,16 @@ public class PillPeriodActivity extends Activity {
 		//if(notification_cursor.getCount()==0){
 			fill_dummy_notification();
 		//}
-			int xxx = notification_cursor.getCount();
+		//	int xxx = notification_cursor.getCount();
 		
 		
 		period_cursor.moveToFirst();
-		int aa = period_cursor.getInt(
-				period_cursor.getColumnIndex(
-						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-					)	
-				);
-		int zz = aa+10;
+//		int aa = period_cursor.getInt(
+//				period_cursor.getColumnIndex(
+//						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+//					)	
+//				);
+		
 		//set period title
 		period_title.setText(
 			period_cursor.getString(
@@ -163,6 +161,16 @@ public class PillPeriodActivity extends Activity {
 		}
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View view) {
+		// TODO Auto-generated method stub
+		int resource_ID = view.getId();
+		switch (resource_ID) {
+		
+		
+		}
 	}
 	
 	
