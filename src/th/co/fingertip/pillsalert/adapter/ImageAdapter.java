@@ -1,14 +1,14 @@
 package th.co.fingertip.pillsalert.adapter;
 
-import th.co.fingertip.pillsalert.FileManager;
+
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
-import android.R.drawable;
+
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
