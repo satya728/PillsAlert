@@ -5,14 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+public class Period {
 
-public class Pill {
-	
 	//instance variables
 	public int id = 0;
 	public String title;
-	public String note;
-	public String image;
+	public String time;
 	public boolean is_existed;
 	
 	//static variables
@@ -21,13 +19,12 @@ public class Pill {
 	private static SQLiteDatabase sqlite_database;
 	private static boolean is_initialed = false;
 	private static String db_name = "pillsalert";;
-	private static String table_name = "pills";
-	private static String create_statement = "create table pills (" + 
-											  "_id integer primary key autoincrement, " +
+	private static String table_name = "periods";
+	private static String create_statement = "create table periods ("+
+											  "_id integer primary key autoincrement, "+
 											  "title text not null, "+
-											  "note text not null, " +
-											  "image text not null);";
-	private static String[] fields = {"_id","title","note","image"};
+											  "time text not null);";
+	private static String[] fields = {"_id","title","time"};
 	private static int db_version = DatabaseConfiguration.DB_VERSION;
 	
 	public static final String FIRST = "first";
@@ -41,12 +38,10 @@ public class Pill {
 	 * @param c the Cursor that holds a row data
 	 * @return new Pill instance
 	 */
-	public Pill(Cursor c) {
+	public Period(Cursor c) {
 		super();
 		id = c.getInt(c.getColumnIndex("_id"));
 		title = c.getString(c.getColumnIndex("title"));
-		note = c.getString(c.getColumnIndex("note"));
-		image = c.getString(c.getColumnIndex("image"));
 	}
 	/**
 	 * Create Pill instance from a given data set
@@ -55,11 +50,10 @@ public class Pill {
 	 * @param image image file name
 	 * @return new Pill instance
 	 */
-	public Pill(String title, String note, String image) {
+	public Period(String title, String time) {
 		super();
 		this.title = title;
-		this.note = note;
-		this.image = image;
+		this.time = time;
 	}
 	public boolean save(){
 		int operation_status;
@@ -84,8 +78,7 @@ public class Pill {
 	private ContentValues getContentValues(){
 		ContentValues content_values = new ContentValues();
 		content_values.put("title", title);
-		content_values.put("note", note);
-		content_values.put("image", image);
+		content_values.put("time", time);
 		return content_values;
 	}
 
@@ -112,17 +105,17 @@ public class Pill {
 		cursor = null;
 	}
 	
-	public static Pill find(int id){
+	public static Period find(int id){
 		
 		String[] query_parameters ={""+id}; 
 		cursor = sqlite_database.query(table_name, fields, "_id = ?", query_parameters, null, null, null);
 		if(cursor.getCount() == 1){
-			return new Pill(cursor);
+			return new Period(cursor);
 		}
 		return null;
 	}
 	
-	public static Pill[] find(String mode){
+	public static Period[] find(String mode){
 		if(mode.equals(Pill.ALL)){
 			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null);
 		}
@@ -130,22 +123,22 @@ public class Pill {
 			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
 		}
 		
-		return getPillArray();
+		return getPeriodArray();
 	}
 	
-	public static Pill[] find(String condition_string, String[] condition_parameters){
+	public static Period[] find(String condition_string, String[] condition_parameters){
 		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
-		return getPillArray();
+		return getPeriodArray();
 	}
 	
-	public static Pill[] find(String condition_string, String[] condition_parameters, String order){
+	public static Period[] find(String condition_string, String[] condition_parameters, String order){
 		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
-		return getPillArray();
+		return getPeriodArray();
 	}
 	
-	public static Pill[] find(String condition_string, String[] condition_parameters, String order, String limit){
+	public static Period[] find(String condition_string, String[] condition_parameters, String order, String limit){
 		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
-		return getPillArray();
+		return getPeriodArray();
 	}
 	
 	public static void delete(int id){
@@ -154,12 +147,12 @@ public class Pill {
 	}
 	
 	
-	private static Pill[] getPillArray(){
+	private static Period[] getPeriodArray(){
 		if(cursor.getCount() != 0 ){
-			Pill[] results = new Pill[cursor.getCount()];
+			Period[] results = new Period[cursor.getCount()];
 			
 			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-				results[cursor.getPosition()] = new Pill(cursor);
+				results[cursor.getPosition()] = new Period(cursor);
 			}
 			return results;
 		}
