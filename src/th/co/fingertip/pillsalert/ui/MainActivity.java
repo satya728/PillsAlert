@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
 		Pill.init(context);
 		Pill[] pills = Pill.find(Pill.ALL);
 		
-		Pill[] pills11 = Pill.find(1);
+		Pill pills11 = Pill.find(1);
 				
 		Pill[] pills2 = Pill.find(Pill.FIRST);
 		
