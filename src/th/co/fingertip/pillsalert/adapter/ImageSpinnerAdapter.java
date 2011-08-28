@@ -21,7 +21,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	private Context context;
 	int gallery_item_background;
 	private boolean adjustable_flag;
-	private Cursor cursor;
+
 	private int model;
 	
 	public Long period_id;
@@ -40,23 +40,22 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 	public ImageSpinnerAdapter (Context context, boolean flag, Cursor cursor, int model) {
 		init(context);
 		adjustable_flag = flag;
-		this.cursor = cursor;
-		this.model = model;
-		fillData();
+		
+		fillData(cursor, model);
 	}
 	
 	public ImageSpinnerAdapter (Context context, boolean flag, Cursor cursor, Long period_id, int model) {
 		init(context);
 		adjustable_flag = flag;
-		this.cursor = cursor;
 		this.model = model;
 		this.period_id = period_id;
-		fillData();
-		int cnt = images.size();
-		int xx = cnt;
+		
+		fillData(cursor, model);
+		
 	}
 	
-	private void fillData() {
+	private void fillData(Cursor cursor, int model) {
+		
 		if (cursor.getCount() != 0) {
 			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 				long id = -1;	
@@ -81,7 +80,7 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 				images.add(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
 			}
 		}
-		cursor.close();
+		
 	}
 
 	private void init(Context context) {
@@ -147,8 +146,12 @@ public class ImageSpinnerAdapter extends BaseAdapter {
 		return i;
 	}
 	
-	public void updatePeriodSpinner(Cursor cursor) {
+	public void updateItem(Cursor notification_cursor, int model) {
 		
+		images.clear();
+		ids.clear();
+		
+		fillData(notification_cursor, model);
 		
 	}
 	

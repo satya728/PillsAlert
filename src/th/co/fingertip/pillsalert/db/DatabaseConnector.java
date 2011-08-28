@@ -36,12 +36,19 @@ public class DatabaseConnector extends SQLiteOpenHelper {
 		db.execSQL("delete from notifications where _id>0");
 		db.execSQL("insert into pills(_id,title,note,image) values(1,'first pill','f','1.PNG')");
 		db.execSQL("insert into pills(_id,title,note,image) values(2,'first pill','f','dummy_pill.png')");
+		db.execSQL("insert into pills(_id,title,note,image) values(3,'four','yo','4.png')");
+		db.execSQL("insert into pills(_id,title,note,image) values(4,'five','yo','5.png')");
+		db.execSQL("insert into pills(_id,title,note,image) values(5,'six','yo','6.png')");
 		
 		ContentValues cv = new ContentValues();
 		cv.put("_id", 1);
 		cv.put("title", "morning");
 		cv.put("time", "14-45");
-		db.insert("periods", null,cv); 
+		db.insert("periods", null,cv);
+		cv.put("_id", 1);
+		cv.put("title", "afternoon");
+		cv.put("time", "17-45");
+		db.insert("periods", null,cv);
 	}
 
 	@Override

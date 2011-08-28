@@ -1,7 +1,6 @@
 package th.co.fingertip.pillsalert.ui;
 
 import java.util.Iterator;
-import java.util.Vector;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
@@ -80,7 +79,6 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		period_cursor.moveToFirst();
 		//variable
 		n_period = period_cursor.getCount();
-		int n_pill = pill_cursor.getColumnCount();
 		
 		//set period title
 		period_title.setText(
@@ -165,16 +163,16 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	@Override
 	public void onBackPressed() {
 		//move to first
-		if (period_cursor.getCount()!=0) {
-			period_cursor.move(-1);
-			for (;period_cursor.moveToNext();) {
-				String st = period_cursor.getString(period_cursor.getColumnIndex(
-						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2]));
-				Util.put(this, "start service" + st , Util.SHORT_TRACE);
-				
-				startService(new Intent(this, TimeService.class));
-			}
-		}
+//		if (period_cursor.getCount()!=0) {
+//			period_cursor.move(-1);
+//			for (;period_cursor.moveToNext();) {
+//				String st = period_cursor.getString(period_cursor.getColumnIndex(
+//						DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2]));
+//				Util.put(this, "start service" + st , Util.SHORT_TRACE);
+//				
+//				startService(new Intent(this, TimeService.class));
+//			}
+//		}
 
 		super.onBackPressed();
 	}
@@ -182,44 +180,62 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		
-		int resource_name = view.getId();
-		long current_period_id = period_spinner.period_id;
 		
-		switch (resource_name) {
+		int resourceIsClicked = view.getId();
+		int model = PillsAlertEnum.Model.NOTIFICATION;
+		
+		switch (resourceIsClicked) {
+		
 		case R.id.previous_period_button:
 
 			update_notification(period_spinner);
 			
-			if (current_period_id - 1 < 0) {
-				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
+			if (period_cursor.moveToLast()) {
+				
+				String new_title = period_cursor.getString(period_cursor.getColumnIndex(
+									DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]) );
+				period_title.setText(new_title);
+				
+				long new_id = period_cursor.getLong(period_cursor.getColumnIndex(
+								DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]));
+				
+				String whereClause = DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2] + "=" + new_id;
+				
+				Cursor result_cursor = notification_database.selectRowWhere(whereClause);
+				
+				pill_spinner.updateItem(result_cursor, model);
 			} 
 			else {
-				
-				String new_title = period_cursor.getString(
-						period_cursor.getColumnIndex(
-							DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-						) );
-				pill_spinner.updatePeriodSpinner(period_cursor);
+				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
 			}
-			
-			
 			
 		break;
 		
 		case R.id.next_period_button:
-			
+		
 			update_notification(period_spinner);
 			
-			if (current_period_id + 1 >= n_period ) {
-				Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
-			} 
-			else {
-				updatePeriodSpinner(current_period_id + 1);
+			if (period_cursor.moveToNext()) {
+				
+				String new_title = period_cursor.getString(period_cursor.getColumnIndex(
+									DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]) );
+				period_title.setText(new_title);
+				
+				long new_id = period_cursor.getLong(period_cursor.getColumnIndex(
+								DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]));
+				
+				String whereClause = DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2] + "=" + new_id;
+				
+				Cursor result_cursor = notification_database.selectRowWhere(whereClause);
+				pill_spinner.updateItem(result_cursor, model);
 			}
-			
+			else {
+					Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
+			}
 		break;
 		
 		}
+		
 	}
 	
 
