@@ -55,88 +55,72 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pill_period);
 		
-		Pill.init(this);
-		Pill[] pills = Pill.find(Pill.ALL);
-		
-		Pill[] pills11 = Pill.find(1);
-				
-		Pill[] pills2 = Pill.find(Pill.FIRST);
-		
-		Pill[] pills3 = Pill.find("title like ?", new String[]{"%first%"});
-		
-		
-		Pill[] pills4 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc");
-		
-		Pill[] pills5 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc", "1");
-		
-		String a = pills[0].title;
-//		
-//		drag_layer = (DragLayer)findViewById(R.id.drag_layer);
-//		
-//		pill_gallery = (DragDropGallery)findViewById(R.id.pill_gallery);
-//		period_gallery = (DragDropGallery)findViewById(R.id.period_gallery);
-//		
-//		period_title = (TextView)findViewById(R.id.period_title);
-//		
-//		previous_button = (Button)findViewById(R.id.previous_period_button);
-//		next_button = (Button)findViewById(R.id.next_period_button);
-//		
-//		
-//		pill_database = new PillDatabaseAdapter(this);
-//		period_database = new PeriodDatabaseAdapter(this);
-//		notification_database = new NotificationDatabaseAdapter(this);
-//		
-//		pill_database.connect();
-//		period_database.connect();
-//		notification_database.connect();
-//		
-//		pill_cursor = pill_database.selectRow(null);
-//		period_cursor = period_database.selectRow(null);
-//		notification_cursor = notification_database.selectRow(null);
-//
-//		period_cursor.moveToFirst();
-//		
-//
-//		
-//		//set period title
-//		period_title.setText(
-//			period_cursor.getString(
-//				period_cursor.getColumnIndex(
-//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-//				)
-//			)
-//		);
-//		
-//		//get notification cursor for first period entry
-//		Long period_id = period_cursor.getLong(
-//			period_cursor.getColumnIndex(
-//				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-//			)	
-//		); 
-//		
-//		notification_cursor = notification_database.selectRowWhere(
-//			"period_id = " + 
-//			period_cursor.getInt(
-//				period_cursor.getColumnIndex(
-//					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-//				)	
-//			)
-//		);
-//		
-//		pill_spinner = new ImageSpinnerAdapter(
-//						this,false,pill_cursor,PillsAlertEnum.Model.PILL);
-//		period_spinner = new ImageSpinnerAdapter(
-//						this,true,notification_cursor,period_id,PillsAlertEnum.Model.NOTIFICATION);
-//		
-//		pill_gallery.setAdapter(pill_spinner);
-//		period_gallery.setAdapter(period_spinner);
-//		
-//		
-//		pill_gallery.setDragger(drag_layer);
-//		period_gallery.setDragger(drag_layer);
-//		
-//		previous_button.setOnClickListener(this);
-//		next_button.setOnClickListener(this);
+	 	drag_layer = (DragLayer)findViewById(R.id.drag_layer);
+	 	
+	 	pill_gallery = (DragDropGallery)findViewById(R.id.pill_gallery);
+	 	period_gallery = (DragDropGallery)findViewById(R.id.period_gallery);
+	 	
+	 	period_title = (TextView)findViewById(R.id.period_title);
+	 	
+	 	previous_button = (Button)findViewById(R.id.previous_period_button);
+	 	next_button = (Button)findViewById(R.id.next_period_button);
+	 	
+	 	
+	 	pill_database = new PillDatabaseAdapter(this);
+	 	period_database = new PeriodDatabaseAdapter(this);
+	 	notification_database = new NotificationDatabaseAdapter(this);
+	 	
+	 	pill_database.connect();
+	 	period_database.connect();
+	 	notification_database.connect();
+	 	
+	 	pill_cursor = pill_database.selectRow(null);
+	 	period_cursor = period_database.selectRow(null);
+	 	notification_cursor = notification_database.selectRow(null);
+
+	 	period_cursor.moveToFirst();
+	 	
+
+	 	
+	 	//set period title
+	 	period_title.setText(
+	 		period_cursor.getString(
+	 			period_cursor.getColumnIndex(
+	 				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
+	 			)
+	 		)
+	 	);
+	 	
+	 	//get notification cursor for first period entry
+	 	Long period_id = period_cursor.getLong(
+	 		period_cursor.getColumnIndex(
+	 			DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+	 		)	
+	 	); 
+	 	
+	 	notification_cursor = notification_database.selectRowWhere(
+	 		"period_id = " + 
+	 		period_cursor.getInt(
+	 			period_cursor.getColumnIndex(
+	 				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
+	 			)	
+	 		)
+	 	);
+	 	
+	 	pill_spinner = new ImageSpinnerAdapter(
+	 					this,false,pill_cursor,PillsAlertEnum.Model.PILL);
+	 	period_spinner = new ImageSpinnerAdapter(
+	 					this,true,notification_cursor,period_id,PillsAlertEnum.Model.NOTIFICATION);
+	 	
+	 	pill_gallery.setAdapter(pill_spinner);
+	 	period_gallery.setAdapter(period_spinner);
+	 	
+	 	
+	 	pill_gallery.setDragger(drag_layer);
+	 	period_gallery.setDragger(drag_layer);
+	 	
+	 	previous_button.setOnClickListener(this);
+	 	next_button.setOnClickListener(this);
 		
 	}
 	
