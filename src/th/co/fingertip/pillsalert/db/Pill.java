@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class Pill {
 	
 	//instance variables
-	public int id;
+	public int id = 0;
 	public String title;
 	public String note;
 	public String image;
@@ -24,8 +24,13 @@ public class Pill {
 											  "_id integer primary key autoincrement, " +
 											  "title text not null, "+
 											  "note text not null, " +
-											  "image text not null);"; 
+											  "image text not null);";
+	private static String[] fields = {"_id","title","note","image"};
 	private static int db_version = 1;
+	
+	public static final String FIRST = "first";
+	public static final String ALL = "all";
+	
 	
 	//instance methods
 	
@@ -39,6 +44,7 @@ public class Pill {
 		id = c.getInt(c.getColumnIndex("_id"));
 		title = c.getString(c.getColumnIndex("title"));
 		note = c.getString(c.getColumnIndex("note"));
+		image = c.getString(c.getColumnIndex("image"));
 	}
 	/**
 	 * Create Pill instance from a given data set
@@ -55,7 +61,13 @@ public class Pill {
 	}
 	public void save(){
 		//if existed, update
+		if(id!=0){
+			
+		}
 		//else, create new
+		else{
+			
+		}
 	}
 
 
@@ -82,36 +94,42 @@ public class Pill {
 	}
 	
 	public static Pill[] find(int id){
-//		cursor = sqlite_database.query(table_name, {"_id","title","note","image"}, "_id = ?", {""+id}, null, null, null);
+		String[] query_parameters ={""+id}; 
+		cursor = sqlite_database.query(table_name, fields, "_id = ?", query_parameters, null, null, null);
 		return getPillArray();
 	}
 	
 	public static Pill[] find(String mode){
-//		if(mode.equals("all")){
-//			cursor = sqlite_database.query(table_name, ["_id","title","note","image"], null, null, null, null, null);
-//		}
-//		else if(mode.equals("first")){
-//			cursor = sqlite_database.query(table_name, ["_id","title","note","image"], "_id = ?", [""+id], groupBy, having, orderBy);
-//		}
+		if(mode.equals(Pill.ALL)){
+			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null);
+		}
+		else if(mode.equals(Pill.FIRST)){
+			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
+		}
 		
 		return getPillArray();
 	}
 	
-	public static Pill[] find(String mode, String conditions){
+	public static Pill[] find(String condition_string, String[] condition_parameters){
+		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
 		return getPillArray();
 	}
 	
-	public static Pill[] find(String mode, String conditions, String order){
+	public static Pill[] find(String condition_string, String[] condition_parameters, String order){
+		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
 		return getPillArray();
 	}
 	
-	public static Pill[] find(String mode, String conditions, String order, String limit){
+	public static Pill[] find(String condition_string, String[] condition_parameters, String order, String limit){
+		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
 		return getPillArray();
 	}
 	
 	public static void delete(int id){
-		
+		String[] parameters = {""+id};
+		sqlite_database.delete(table_name, "id = ?", parameters);
 	}
+	
 	
 	private static Pill[] getPillArray(){
 		if(cursor.getCount() != 0 ){

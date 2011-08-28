@@ -1,6 +1,7 @@
 package th.co.fingertip.pillsalert.ui;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
@@ -10,6 +11,7 @@ import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
+import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
@@ -53,10 +55,10 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pill_period);
 		
-		drag_layer = (DragLayer)findViewById(R.id.drag_layer);
-		
 		pill_gallery = (DragDropGallery)findViewById(R.id.pill_gallery);
 		period_gallery = (DragDropGallery)findViewById(R.id.period_gallery);
+		
+		drag_layer = (DragLayer)findViewById(R.id.drag_layer);
 		
 		period_title = (TextView)findViewById(R.id.period_title);
 		
@@ -104,7 +106,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 				)	
 			)
 		);
-		
+
 		pill_spinner = new ImageSpinnerAdapter(
 						this,false,pill_cursor,PillsAlertEnum.Model.PILL);
 		period_spinner = new ImageSpinnerAdapter(
@@ -112,7 +114,6 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		pill_gallery.setAdapter(pill_spinner);
 		period_gallery.setAdapter(period_spinner);
-		
 		
 		pill_gallery.setDragger(drag_layer);
 		period_gallery.setDragger(drag_layer);
@@ -144,22 +145,39 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		notification_database.insertRow(p);
 	}
 
-	private void update_notification(ImageSpinnerAdapter adapter){
+	
+	private void updateNotification(ImageSpinnerAdapter adapter){
+		//notification_database.sqlite_db_instance.execSQL("delete from notifications where _id > 0 ");
+		Cursor existing_notification_cursor = notification_database.selectRowWhere("period_id = " + adapter.period_id);
+		Vector<Long> existing_notification_vector = Util.flatten_id(existing_notification_cursor);
 		
-		Iterator<Long> iterator = adapter.ids.iterator();
+//		Iterator<Long> new_iterator = adapter.ids.iterator();
+//		Iterator<Long> existing_iterator = existing_notification_vector.iterator();
+//		//delete existing notification
+//		while(existing_iterator.hasNext()){
+//			Long old_id = (Long)existing_iterator.next();
+//			if(!adapter.ids.contains(old_id)){
+//				//delete
+//				notification_database.deleteRow(old_id);
+//			}
+//		}
+//		//add new notification
+//		int i = 0;
+//		while(new_iterator.hasNext()){
+//			Long id = (Long)new_iterator.next();
+//			if(!existing_notification_vector.contains(id)){
+//				Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
+//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
+//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], adapter.period_id);
+//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], adapter.images.get(i));
+//				notification_database.insertRow(p);
+//				i = i + 1;
+//			}
+//			
+//		}
 
-		int i = 0;
-		while(iterator.hasNext()){
-			Long id = (Long)iterator.next();
-			Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
-			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], adapter.period_id);
-			p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], adapter.images.get(i));
-			notification_database.insertRow(p);
-			i = i + 1;
-		}
 	}
-
+	
 	@Override
 	public void onBackPressed() {
 		//move to first
@@ -188,7 +206,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		case R.id.previous_period_button:
 
-			update_notification(period_spinner);
+			updateNotification(period_spinner);
 			
 			if (period_cursor.moveToLast()) {
 				
@@ -213,7 +231,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		case R.id.next_period_button:
 		
-			update_notification(period_spinner);
+			updateNotification(period_spinner);
 			
 			if (period_cursor.moveToNext()) {
 				
@@ -230,7 +248,8 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 				pill_spinner.updateItem(result_cursor, model);
 			}
 			else {
-					Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
+				
+				Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
 			}
 		break;
 		
