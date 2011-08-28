@@ -8,8 +8,10 @@ import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.TimeService;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
+import th.co.fingertip.pillsalert.db.Notification;
 import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.Parameters;
+import th.co.fingertip.pillsalert.db.Period;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
@@ -31,15 +33,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	private DragDropGallery pill_gallery;
 	private DragDropGallery period_gallery;
 	private DragLayer drag_layer;
-	
-	private PillDatabaseAdapter pill_database;
-	private PeriodDatabaseAdapter period_database;
-	private NotificationDatabaseAdapter notification_database;
-	
-	private Cursor pill_cursor;
-	private Cursor period_cursor;
-	private Cursor notification_cursor;
-	
+
 	private TextView period_title;
 	
 	private Button previous_button;
@@ -47,8 +41,12 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	
 	private ImageSpinnerAdapter pill_spinner;
 	private ImageSpinnerAdapter period_spinner;
+
+	private int period_index;
 	
-	private int n_period;
+	private Pill[] pills;
+	private Period[] periods;
+	private Notification[] notifications;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,52 +63,28 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		previous_button = (Button)findViewById(R.id.previous_period_button);
 		next_button = (Button)findViewById(R.id.next_period_button);
 		
+		Pill.init(this);
+		Period.init(this);
+		Notification.init(this);
 		
-		pill_database = new PillDatabaseAdapter(this);
-		period_database = new PeriodDatabaseAdapter(this);
-		notification_database = new NotificationDatabaseAdapter(this);
-		
-		pill_database.connect();
-		period_database.connect();
-		notification_database.connect();
-		
-		pill_cursor = pill_database.selectRow(null);
-		period_cursor = period_database.selectRow(null);
-		notification_cursor = notification_database.selectRow(null);
+		pills = Pill.find(Pill.ALL);
+		periods = Period.find(Period.ALL);
 
-		period_cursor.moveToFirst();
-		//variable
-		n_period = period_cursor.getCount();
+		//set period index = 0 as we begin using the first period 
+		period_index = 0;
 		
 		//set period title
-		period_title.setText(
-			period_cursor.getString(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]
-				)
-			)
-		);
+		period_title.setText(periods[0].title);
 		
 		//get notification cursor for first period entry
-		Long period_id = period_cursor.getLong(
-			period_cursor.getColumnIndex(
-				DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-			)	
-		); 
 		
-		notification_cursor = notification_database.selectRowWhere(
-			"period_id = " + 
-			period_cursor.getInt(
-				period_cursor.getColumnIndex(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]
-				)	
-			)
-		);
+		notifications = Notification.find("period_id = ?", new String[]{""+periods[0].id});
+		
 
 		pill_spinner = new ImageSpinnerAdapter(
-						this,false,pill_cursor,PillsAlertEnum.Model.PILL);
+						this,false,pills,PillsAlertEnum.Model.PILL);
 		period_spinner = new ImageSpinnerAdapter(
-						this,true,notification_cursor,period_id,PillsAlertEnum.Model.NOTIFICATION);
+						this,true,notifications,period_id,PillsAlertEnum.Model.NOTIFICATION);
 		
 		pill_gallery.setAdapter(pill_spinner);
 		period_gallery.setAdapter(period_spinner);
@@ -121,34 +95,12 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		previous_button.setOnClickListener(this);
 		next_button.setOnClickListener(this);	
 	}
-	
-	private void fill_dummy_pill(){
-		Parameters p = new Parameters(PillsAlertEnum.Model.PILL);
-		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[1], "Mypill1");
-		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[2], "mypill1 note");
-		p.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[3], "1.PNG");
-		pill_database.insertRow(p);
-	}
-	private void fill_dummy_period(){
-		Parameters p = new Parameters(PillsAlertEnum.Model.PERIOD);
-		p.put(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1], "Morning");
-		p.put(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2], "11:18");
-		period_database.insertRow(p);
-	}
-	private void fill_dummy_notification() {
-		notification_database.deleteRow(1l);
-		Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], 1);
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], 1);
-		p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
-		notification_database.insertRow(p);
-	}
 
 	
 	private void updateNotification(ImageSpinnerAdapter adapter){
 		//notification_database.sqlite_db_instance.execSQL("delete from notifications where _id > 0 ");
-		Cursor existing_notification_cursor = notification_database.selectRowWhere("period_id = " + adapter.period_id);
-		Vector<Long> existing_notification_vector = Util.flatten_id(existing_notification_cursor);
+		//Cursor existing_notification_cursor = notification_database.selectRowWhere("period_id = " + adapter.period_id);
+		//Vector<Long> existing_notification_vector = Util.flatten_id(existing_notification_cursor);
 		
 //		Iterator<Long> new_iterator = adapter.ids.iterator();
 //		Iterator<Long> existing_iterator = existing_notification_vector.iterator();
@@ -197,67 +149,40 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View view) {
 		
-		
 		int resourceIsClicked = view.getId();
 		int model = PillsAlertEnum.Model.NOTIFICATION;
 		
 		switch (resourceIsClicked) {
 		
 		case R.id.previous_period_button:
-
 			updateNotification(period_spinner);
-			
-			if (period_cursor.moveToLast()) {
-				
-				String new_title = period_cursor.getString(period_cursor.getColumnIndex(
-									DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]) );
-				period_title.setText(new_title);
-				
-				long new_id = period_cursor.getLong(period_cursor.getColumnIndex(
-								DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]));
-				
-				String whereClause = DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2] + "=" + new_id;
-				
-				Cursor result_cursor = notification_database.selectRowWhere(whereClause);
-				
-				pill_spinner.updateItem(result_cursor, model);
-			} 
-			else {
+			try{
+				period_index = period_index - 1;
+				Period current_period = periods[period_index];
+				period_title.setText(current_period.title);
+				notifications = Notification.find("period_id=?", new String[]{current_period.id+""});
+				//pill_spinner.updateItem(notification_cursor, model);
+			}
+			catch(ArrayIndexOutOfBoundsException e){
 				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
 			}
-			
-		break;
+			break;
 		
 		case R.id.next_period_button:
-		
 			updateNotification(period_spinner);
-			
-			if (period_cursor.moveToNext()) {
-				
-				String new_title = period_cursor.getString(period_cursor.getColumnIndex(
-									DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]) );
-				period_title.setText(new_title);
-				
-				long new_id = period_cursor.getLong(period_cursor.getColumnIndex(
-								DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]));
-				
-				String whereClause = DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2] + "=" + new_id;
-				
-				Cursor result_cursor = notification_database.selectRowWhere(whereClause);
-				pill_spinner.updateItem(result_cursor, model);
+			try{
+				period_index = period_index + 1;
+				Period current_period = periods[period_index];
+				period_title.setText(current_period.title);
+				notifications = Notification.find("period_id=?", new String[]{current_period.id+""});
+				//pill_spinner.updateItem(notification_cursor, model);
 			}
-			else {
-				
-				Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
+			catch(ArrayIndexOutOfBoundsException e){
+				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
 			}
-		break;
-		
+			break;
 		}
-		
-	}
-	
-
-	
+	}	
 }
 	
 	
