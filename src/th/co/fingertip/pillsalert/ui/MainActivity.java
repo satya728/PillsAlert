@@ -5,10 +5,12 @@ import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.Parameters;
+import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -79,8 +81,54 @@ public class MainActivity extends Activity {
 		});
 		fill_data();
 		registerForContextMenu(gridview);
+		
+		
+		test_pill_model(this);
 	}
 	
+	private void test_pill_model(Context context) {
+		// TODO Auto-generated method stub
+		Pill.init(context);
+		Pill[] pills = Pill.find(Pill.ALL);
+		
+		Pill[] pills11 = Pill.find(1);
+				
+		Pill[] pills2 = Pill.find(Pill.FIRST);
+		
+		Pill[] pills3 = Pill.find("title like ?", new String[]{"%first%"});
+		
+		
+		Pill[] pills4 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc");
+		
+		Pill[] pills5 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc", "1");
+		
+//		String a = pills[0].title;
+//		
+//		Pill ax = pills[0];
+//		ax.title = "pon loves nong";
+//		ax.save();
+//		
+//		String b = ax.title;
+		
+
+		
+		Pill bx = new Pill("manual pill", "this is added by hand123", "1.PNG");
+		bx.save();
+		
+		Pill cx = new Pill("manual pill2", "this is added by hand22222", "2.PNG");
+		cx.save();
+		
+		Pill[] pillz = Pill.find(Pill.ALL);
+		
+		bx.title="I then edit it";
+		bx.save();
+		
+		Pill.close();
+		
+		
+
+	}
+
 	private void fill_data(){
 		pill_cursor = pill_database.selectRow(null);
 		if(pill_cursor.getCount() != 0){
