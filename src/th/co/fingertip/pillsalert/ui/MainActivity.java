@@ -30,7 +30,7 @@ import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends Activity {
 	
-	private ImageAdapter image_adapter;
+	private PillImageAdapter image_adapter;
 	private SimpleCursorAdapter pill_cursor_adapter;
 	private GridView gridview;
 	private Pill[] pills;
