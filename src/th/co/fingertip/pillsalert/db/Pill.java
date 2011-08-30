@@ -13,7 +13,6 @@ public class Pill {
 	public String title;
 	public String note;
 	public String image;
-	public boolean is_existed;
 	
 	//static variables
 	private static Cursor cursor;
@@ -32,6 +31,10 @@ public class Pill {
 	
 	public static final String FIRST = "first";
 	public static final String ALL = "all";
+	public static final String ID = "_id";
+	public static final String TITLE = "title";
+	public static final String NOTE = "note";
+	public static final String IMAGE = "image";
 	
 	
 	//instance methods
@@ -112,39 +115,50 @@ public class Pill {
 		cursor = null;
 	}
 	
+	public static Cursor find_cursor(int id){
+		return sqlite_database.query(table_name, fields, "_id = ?", new String[]{id+""}, null, null, null);
+	}
 	public static Pill find(int id){
-		
-		String[] query_parameters ={""+id}; 
-		cursor = sqlite_database.query(table_name, fields, "_id = ?", query_parameters, null, null, null);
+		cursor = find_cursor(id);
 		if(cursor.getCount() == 1){
 			return new Pill(cursor);
 		}
 		return null;
 	}
 	
-	public static Pill[] find(String mode){
+	public static Cursor find_cursor(String mode){
 		if(mode.equals(Pill.ALL)){
-			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null);
+			return sqlite_database.query(table_name, fields, null, null, null, null, null);
 		}
 		else if(mode.equals(Pill.FIRST)){
-			cursor = sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
+			return sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
 		}
-		
-		return getPillArray();
+		return null;
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order, String limit){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
 	}
 	
+	public static Pill[] find(String mode){
+		cursor = find_cursor(mode);
+		return getPillArray();
+	}
 	public static Pill[] find(String condition_string, String[] condition_parameters){
-		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
+		cursor = find_cursor(condition_string, condition_parameters);
 		return getPillArray();
 	}
-	
 	public static Pill[] find(String condition_string, String[] condition_parameters, String order){
-		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
+		cursor = find_cursor(condition_string, condition_parameters, order);
 		return getPillArray();
 	}
-	
 	public static Pill[] find(String condition_string, String[] condition_parameters, String order, String limit){
-		cursor = sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
+		cursor = find_cursor(condition_string, condition_parameters, order, limit);
 		return getPillArray();
 	}
 	

@@ -4,6 +4,7 @@ import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.Parameters;
+import th.co.fingertip.pillsalert.db.Period;
 import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.ListActivity;
@@ -24,14 +25,11 @@ import android.widget.SimpleCursorAdapter;
 
 public class PeriodSettingActivity extends ListActivity{
 
-	PeriodDatabaseAdapter period_database;
-	Cursor period_cursor;
+	private Period[] periods;
 	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
-		period_database.close();
 	}
 	
 	@Override
@@ -40,18 +38,17 @@ public class PeriodSettingActivity extends ListActivity{
 		setContentView(R.layout.period_setting);
 		registerForContextMenu(getListView());
 		
-		period_database = new PeriodDatabaseAdapter(this);
-		period_database.connect();
-
+		Period.init(this);
 		fill_data();
 	}
 
 
 	private void fill_data() {
-		period_cursor = period_database.selectRow(null);
+		periods = Period.find(Period.ALL);
+		Cursor period_cursor = Period.find_cursor(Period.ALL);
 		period_cursor.moveToFirst();
 		startManagingCursor(period_cursor);
-		String[] from_column = {DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]};
+		String[] from_column = {Period.TITLE};
 		int[] to_view = {R.id.period_setting_row_item};
 		SimpleCursorAdapter period_cursor_adapter = new SimpleCursorAdapter(
 			this, 
@@ -69,29 +66,28 @@ public class PeriodSettingActivity extends ListActivity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(data != null){
 			Bundle period_data = data.getExtras();
-			Parameters period_data_parameters = new Parameters(PillsAlertEnum.Model.PERIOD);
-			if(period_data != null){
-				period_data_parameters.put(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1],
-					period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1])
-				);
-				period_data_parameters.put(
-					DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2],
-					period_data.getString(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2])
-				);
-			}
-	
+			int aa =period_data.getInt(Period.ID);
+			Period local_period = null;
 			switch(resultCode){
 				case PillsAlertEnum.Result.PERIOD_CREATE:
-					long aa = period_database.insertRow(period_data_parameters);
+					//long aa = period_database.insertRow(period_data_parameters);
+					local_period = new Period(
+						period_data.getString(Period.TITLE),
+						period_data.getString(Period.TIME)
+					);
 					break;
 				case PillsAlertEnum.Result.PERIOD_UPDATE:
-					Long r_id = period_data.getLong(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0]);
-					period_database.updateRow(period_data_parameters, r_id);
+					local_period = Period.find(period_data.getInt(Period.ID));
+					local_period.title = period_data.getString(Period.TITLE);
+					local_period.time = period_data.getString(Period.TIME);
 					break;
 				default:
 					break;
-			}	
+			}
+			if(local_period != null){
+				local_period.save();
+			}
+			
 			fill_data();
 		}
 	}
@@ -132,9 +128,7 @@ public class PeriodSettingActivity extends ListActivity{
 		switch(item.getItemId()){
 			case R.id.period_setting_context_menu_delete_period:
 				AdapterContextMenuInfo context_menu_info = (AdapterContextMenuInfo)item.getMenuInfo();
-				Long row_id = context_menu_info.id;
-				period_database.deleteRow(row_id);
-				Toast.makeText(this,"row deleted" , Toast.LENGTH_SHORT).show();
+				Period.delete((int) context_menu_info.id);
 				fill_data();
 				break;
 		}
@@ -145,25 +139,13 @@ public class PeriodSettingActivity extends ListActivity{
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		period_cursor.moveToPosition(position);
-		
+		Period period = periods[position];
 		Intent intent = new Intent(this, PeriodEditorActivity.class);
-		
-		Bundle note_data = new Bundle();
-		//pass id
-		note_data.putLong(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[0], id);
-		
-		//pass title
-		note_data.putString(
-			DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1], 
-			period_cursor.getString(period_cursor.getColumnIndex(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[1]))
-		);
-		//pass time
-		note_data.putString(
-			DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2], 
-			period_cursor.getString(period_cursor.getColumnIndex(DatabaseConfiguration.PERIOD_SCHEMA_KEYS[2]))
-		);
-		intent.putExtras(note_data);
+		Bundle period_data = new Bundle();
+		period_data.putInt(Period.ID, (int)id);
+		period_data.putString(Period.TITLE,period.title);
+		period_data.putString(Period.TIME,period.time);
+		intent.putExtras(period_data);
 		startActivityForResult(intent, PillsAlertEnum.Request.PERIOD_UPDATE);
 	}
 	

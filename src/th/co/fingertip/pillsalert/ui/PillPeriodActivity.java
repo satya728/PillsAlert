@@ -81,10 +81,10 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		notifications = Notification.find("period_id = ?", new String[]{""+periods[0].id});
 		
 
-		pill_spinner = new ImageSpinnerAdapter(
-						this,false,pills,PillsAlertEnum.Model.PILL);
-		period_spinner = new ImageSpinnerAdapter(
-						this,true,notifications,period_id,PillsAlertEnum.Model.NOTIFICATION);
+//		pill_spinner = new ImageSpinnerAdapter(
+//						this,false,pills,PillsAlertEnum.Model.PILL);
+//		period_spinner = new ImageSpinnerAdapter(
+//						this,true,notifications,period_id,PillsAlertEnum.Model.NOTIFICATION);
 		
 		pill_gallery.setAdapter(pill_spinner);
 		period_gallery.setAdapter(period_spinner);

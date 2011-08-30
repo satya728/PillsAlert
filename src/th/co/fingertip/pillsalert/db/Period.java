@@ -11,7 +11,6 @@ public class Period {
 	public int id = 0;
 	public String title;
 	public String time;
-	public boolean is_existed;
 	
 	//static variables
 	private static Cursor cursor;
@@ -29,7 +28,9 @@ public class Period {
 	
 	public static final String FIRST = "first";
 	public static final String ALL = "all";
-	
+	public static final String ID = "_id";
+	public static final String TITLE = "title";
+	public static final String TIME = "time";
 	
 	//instance methods
 	
@@ -42,6 +43,7 @@ public class Period {
 		super();
 		id = c.getInt(c.getColumnIndex("_id"));
 		title = c.getString(c.getColumnIndex("title"));
+		time = c.getString(c.getColumnIndex("time"));
 	}
 	/**
 	 * Create Pill instance from a given data set
@@ -103,6 +105,25 @@ public class Period {
 	
 	public static void reset(){
 		cursor = null;
+	}
+	
+	public static Cursor find_cursor(String mode){
+		if(mode.equals(Period.ALL)){
+			return sqlite_database.query(table_name, fields, null, null, null, null, null);
+		}
+		else if(mode.equals(Period.FIRST)){
+			return sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
+		}
+		return null;
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order, String limit){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
 	}
 	
 	public static Period find(int id){

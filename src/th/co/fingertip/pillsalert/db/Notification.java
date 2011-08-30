@@ -9,12 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 public class Notification {
 	
 	//instance variables
-	public int id = 0;
-	public String title;
+	public int id = 0; 
 	public int pill_id;
 	public int period_id;
 	public String image;
-	public boolean is_existed;
 	
 	//static variables
 	private static Cursor cursor;
@@ -33,6 +31,10 @@ public class Notification {
 	
 	public static final String FIRST = "first";
 	public static final String ALL = "all";
+	public static final String ID = "_id";
+	public static final String PILL_ID = "pill_id";
+	public static final String PERIOD_ID = "period_id";
+	public static final String IMAGE = "image";
 	
 	
 	//instance methods
@@ -111,6 +113,25 @@ public class Notification {
 	
 	public static void reset(){
 		cursor = null;
+	}
+	
+	public static Cursor find_cursor(String mode){
+		if(mode.equals(Notification.ALL)){
+			return sqlite_database.query(table_name, fields, null, null, null, null, null);
+		}
+		else if(mode.equals(Notification.FIRST)){
+			return sqlite_database.query(table_name, fields, null, null, null, null, null,"1");
+		}
+		return null;
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, null);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order);
+	}
+	public static Cursor find_cursor(String condition_string, String[] condition_parameters, String order, String limit){
+		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
 	}
 	
 	public static Notification find(int id){
