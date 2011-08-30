@@ -118,14 +118,6 @@ public class Pill {
 	public static Cursor find_cursor(int id){
 		return sqlite_database.query(table_name, fields, "_id = ?", new String[]{id+""}, null, null, null);
 	}
-	public static Pill find(int id){
-		cursor = find_cursor(id);
-		if(cursor.getCount() == 1){
-			return new Pill(cursor);
-		}
-		return null;
-	}
-	
 	public static Cursor find_cursor(String mode){
 		if(mode.equals(Pill.ALL)){
 			return sqlite_database.query(table_name, fields, null, null, null, null, null);
@@ -145,6 +137,14 @@ public class Pill {
 		return sqlite_database.query(table_name, fields, condition_string, condition_parameters, null, null, order, limit);
 	}
 	
+	public static Pill find(int id){
+		cursor = find_cursor(id);
+		if(cursor.getCount() == 1){
+			cursor.moveToFirst();
+			return new Pill(cursor);
+		}
+		return null;
+	}
 	public static Pill[] find(String mode){
 		cursor = find_cursor(mode);
 		return getPillArray();

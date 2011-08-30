@@ -131,6 +131,7 @@ public class Period {
 		String[] query_parameters ={""+id}; 
 		cursor = sqlite_database.query(table_name, fields, "_id = ?", query_parameters, null, null, null);
 		if(cursor.getCount() == 1){
+			cursor.moveToFirst();
 			return new Period(cursor);
 		}
 		return null;
