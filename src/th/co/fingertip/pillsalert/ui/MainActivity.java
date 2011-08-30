@@ -1,5 +1,7 @@
 package th.co.fingertip.pillsalert.ui;
 
+import java.security.KeyStore.LoadStoreParameter;
+
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageAdapter;
@@ -27,113 +29,48 @@ import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends Activity {
-	private String[] images = {"test.PNG"};
-	private ImageAdapter image_adapter;
-
-	PillDatabaseAdapter pill_database;
-	Cursor pill_cursor;
-	SimpleCursorAdapter pill_cursor_adapter;
-	GridView gridview;
 	
+	private ImageAdapter image_adapter;
+	private SimpleCursorAdapter pill_cursor_adapter;
+	private GridView gridview;
+	private Pill[] pills;
 	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
-		pill_database.close();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		Pill.init(this);
 		
-		pill_database = new PillDatabaseAdapter(this);
-		pill_database.connect();
+		fill_data();
+		registerForContextMenu(gridview);
 		
 		gridview = (GridView)findViewById(R.id.main_ui_gridview);
-		
 		gridview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 				Bundle pill_data = new Bundle();
-				pill_cursor.moveToPosition(position);
-				pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], id);
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[1], 
-					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]))
-				);
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[2], 
-					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]))
-				);
-				String image_filename = pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[3], 
-					image_filename
-				);
-				
+				pill_data.putLong(  Pill.ID,    pills[position].id);
+				pill_data.putString(Pill.TITLE, pills[position].title);
+				pill_data.putString(Pill.NOTE,  pills[position].note);
+				pill_data.putString(Pill.IMAGE, pills[position].image);
 				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
 				edit_note_intent.putExtras(pill_data);
 				startActivityForResult(edit_note_intent, PillsAlertEnum.Request.PERIOD_UPDATE);  
 			}
-			
 		});
-		fill_data();
-		registerForContextMenu(gridview);
-		
-		
-		test_pill_model(this);
-	}
-	
-	private void test_pill_model(Context context) {
-		// TODO Auto-generated method stub
-		Pill.init(context);
-		Pill[] pills = Pill.find(Pill.ALL);
-		
-		Pill pills11 = Pill.find(1);
-				
-		Pill[] pills2 = Pill.find(Pill.FIRST);
-		
-		Pill[] pills3 = Pill.find("title like ?", new String[]{"%first%"});
-		
-		
-		Pill[] pills4 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc");
-		
-		Pill[] pills5 =  Pill.find("title like ?", new String[]{"%first%"},"_id desc", "1");
-		
-//		String a = pills[0].title;
-//		
-//		Pill ax = pills[0];
-//		ax.title = "pon loves nong";
-//		ax.save();
-//		
-//		String b = ax.title;
-		
-
-		
-		Pill bx = new Pill("manual pill", "this is added by hand123", "1.PNG");
-		bx.save();
-		
-		Pill cx = new Pill("manual pill2", "this is added by hand22222", "2.PNG");
-		cx.save();
-		
-		Pill[] pillz = Pill.find(Pill.ALL);
-		
-		bx.title="I then edit it";
-		bx.save();
-		
-		Pill.close();
-		
-		
-
 	}
 
 	private void fill_data(){
-		pill_cursor = pill_database.selectRow(null);
-		if(pill_cursor.getCount() != 0){
-			image_adapter = new ImageAdapter(this, pill_cursor); //images);
-			gridview.setAdapter(image_adapter);
+		//TODO refactor this
+		pills = Pill.find(Pill.ALL);
+		if(pills.length != 0){
+			//image_adapter = new ImageAdapter(this, pill_cursor); //images);
+			//gridview.setAdapter(image_adapter);
 		}
 	}
 	
@@ -181,55 +118,43 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Bundle bundle_data = data.getExtras();
-		Parameters new_pill_data = new Parameters(PillsAlertEnum.Model.PILL);
-		String pill_image = null;
+		Bundle pill_data = data.getExtras();
+		Pill local_pill = null;
 		
-		new_pill_data.put(
-			DatabaseConfiguration.PILL_SCHEMA_KEYS[1],
-			bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[1])
-		);
-		new_pill_data.put(
-			DatabaseConfiguration.PILL_SCHEMA_KEYS[2],
-			bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[2])
-		);
-		pill_image =bundle_data.getString(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]);
-		new_pill_data.put(
-			DatabaseConfiguration.PILL_SCHEMA_KEYS[3],
-			pill_image
-		);
-		Bitmap pill_image_bitmap = bundle_data.getParcelable("image_bitmap");
-		Util.put(this, "result code = " + resultCode, Util.LONG_TRACE);
+		String pill_image = null;
+		Bitmap pill_image_bitmap = pill_data.getParcelable("image_bitmap");
+		
 		switch(resultCode){
 			case PillsAlertEnum.Result.PILL_CREATE:
-				Long new_pill_id = pill_database.insertRow(new_pill_data);
+				local_pill = new Pill(
+					pill_data.getString(Pill.TITLE),
+					pill_data.getString(Pill.NOTE),
+					pill_data.getString(Pill.IMAGE)
+				);
 				
-				if((new_pill_id != -1) && (pill_image_bitmap!=null) ){
-					Util.put(this, "sefefsdfsd", Util.SHORT_TRACE);
-					ImageFactory.save_bitmap(pill_image_bitmap, new_pill_id+".PNG");
-					Parameters new_pill_image = new Parameters(PillsAlertEnum.Model.PILL);
-					new_pill_image.put(DatabaseConfiguration.PILL_SCHEMA_KEYS[3], new_pill_id+".PNG");
-					pill_database.updateRow(new_pill_image,new_pill_id);
+				if((local_pill != null) && (pill_image_bitmap!=null) ){
+					local_pill.save();
+					local_pill.image = local_pill.id+".PNG";
+					local_pill.save();
+					ImageFactory.save_bitmap(pill_image_bitmap, local_pill.image);
 				}
-				
 				break;
 			case PillsAlertEnum.Result.PILL_UPDATE:
-				Long row_id = bundle_data.getLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0]);
-				boolean is_updated = pill_database.updateRow(new_pill_data, row_id);
+				local_pill = Pill.find(pill_data.getInt(Pill.ID));
+				local_pill.title = pill_data.getString(Pill.TITLE);
+				local_pill.note = pill_data.getString(Pill.NOTE);
+				local_pill.image = pill_data.getString(Pill.IMAGE);
 				
-				if(is_updated && (pill_image_bitmap!=null)){
-					ImageFactory.save_bitmap(pill_image_bitmap, row_id+".PNG");
+				local_pill.save();
+				
+				if(pill_image_bitmap!=null){
+					ImageFactory.save_bitmap(pill_image_bitmap, local_pill.image);
 				}
-				
 				break;
 			default:
 				break;
 		}
 		fill_data();
-		
 	}
-	
-	
 }
