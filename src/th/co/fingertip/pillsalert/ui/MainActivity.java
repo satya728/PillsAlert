@@ -2,7 +2,7 @@ package th.co.fingertip.pillsalert.ui;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
-import th.co.fingertip.pillsalert.adapter.ImageAdapter;
+import th.co.fingertip.pillsalert.adapter.PillImageAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.Pill;
@@ -27,8 +27,7 @@ import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends Activity {
-	private String[] images = {"test.PNG"};
-	private ImageAdapter image_adapter;
+	
 
 	PillDatabaseAdapter pill_database;
 	Cursor pill_cursor;
@@ -40,7 +39,7 @@ public class MainActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		pill_database.close();
+		
 	}
 
 	@Override
@@ -48,34 +47,33 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		pill_database = new PillDatabaseAdapter(this);
-		pill_database.connect();
+		Pill.init(this);
 		
 		gridview = (GridView)findViewById(R.id.main_ui_gridview);
 		
 		gridview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-				Bundle pill_data = new Bundle();
-				pill_cursor.moveToPosition(position);
-				pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], id);
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[1], 
-					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]))
-				);
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[2], 
-					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]))
-				);
-				String image_filename = pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
-				pill_data.putString(
-					DatabaseConfiguration.PILL_SCHEMA_KEYS[3], 
-					image_filename
-				);
-				
-				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
-				edit_note_intent.putExtras(pill_data);
-				startActivityForResult(edit_note_intent, PillsAlertEnum.Request.PERIOD_UPDATE);  
+//				Bundle pill_data = new Bundle();
+//				pill_cursor.moveToPosition(position);
+//				pill_data.putLong(DatabaseConfiguration.PILL_SCHEMA_KEYS[0], id);
+//				pill_data.putString(
+//					DatabaseConfiguration.PILL_SCHEMA_KEYS[1], 
+//					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[1]))
+//				);
+//				pill_data.putString(
+//					DatabaseConfiguration.PILL_SCHEMA_KEYS[2], 
+//					pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[2]))
+//				);
+//				String image_filename = pill_cursor.getString(pill_cursor.getColumnIndex(DatabaseConfiguration.PILL_SCHEMA_KEYS[3]));
+//				pill_data.putString(
+//					DatabaseConfiguration.PILL_SCHEMA_KEYS[3], 
+//					image_filename
+//				);
+//				
+//				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
+//				edit_note_intent.putExtras(pill_data);
+//				startActivityForResult(edit_note_intent, PillsAlertEnum.Request.PERIOD_UPDATE);  
 			}
 			
 		});
@@ -83,7 +81,7 @@ public class MainActivity extends Activity {
 		registerForContextMenu(gridview);
 		
 		
-		test_pill_model(this);
+		//test_pill_model(this);
 	}
 	
 	private void test_pill_model(Context context) {
@@ -130,11 +128,14 @@ public class MainActivity extends Activity {
 	}
 
 	private void fill_data(){
-		pill_cursor = pill_database.selectRow(null);
-		if(pill_cursor.getCount() != 0){
-			image_adapter = new ImageAdapter(this, pill_cursor); //images);
-			gridview.setAdapter(image_adapter);
+		
+		Pill[] pills = Pill.find(Pill.ALL); 
+		
+		if(pills.length != 0){
+			PillImageAdapter adapter = new PillImageAdapter(getApplicationContext(), pills);
+			gridview.setAdapter(adapter);
 		}
+		
 	}
 	
 	@Override

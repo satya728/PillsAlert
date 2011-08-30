@@ -10,7 +10,6 @@ public class Notification {
 	
 	//instance variables
 	public int id = 0;
-	public String title;
 	public int pill_id;
 	public int period_id;
 	public String image;
@@ -164,6 +163,6 @@ public class Notification {
 			}
 			return results;
 		}
-		return null;
+		return (new Notification[] {});
 	}
 }

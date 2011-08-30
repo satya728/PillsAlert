@@ -156,6 +156,6 @@ public class Period {
 			}
 			return results;
 		}
-		return null;
+		return (new Period[]{});
 	}
 }
