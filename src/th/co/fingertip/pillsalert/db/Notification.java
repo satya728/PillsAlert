@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class Notification {
 	
 	//instance variables
+
 	public int id = 0; 
 	public int pill_id;
 	public int period_id;
@@ -186,6 +187,6 @@ public class Notification {
 			}
 			return results;
 		}
-		return null;
+		return (new Notification[] {});
 	}
 }

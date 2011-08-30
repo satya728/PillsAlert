@@ -177,6 +177,6 @@ public class Pill {
 			}
 			return results;
 		}
-		return null;
+		return (new Pill[]{});
 	}
 }

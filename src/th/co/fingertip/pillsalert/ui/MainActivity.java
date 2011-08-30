@@ -4,7 +4,7 @@ import java.security.KeyStore.LoadStoreParameter;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
-import th.co.fingertip.pillsalert.adapter.ImageAdapter;
+import th.co.fingertip.pillsalert.adapter.PillImageAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
 import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.Pill;
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
 		
 		fill_data();
 		registerForContextMenu(gridview);
-		
+
 		gridview = (GridView)findViewById(R.id.main_ui_gridview);
 		gridview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
@@ -66,11 +66,11 @@ public class MainActivity extends Activity {
 	}
 
 	private void fill_data(){
-		//TODO refactor this
-		pills = Pill.find(Pill.ALL);
+		Pill[] pills = Pill.find(Pill.ALL); 
+		
 		if(pills.length != 0){
-			//image_adapter = new ImageAdapter(this, pill_cursor); //images);
-			//gridview.setAdapter(image_adapter);
+			PillImageAdapter adapter = new PillImageAdapter(getApplicationContext(), pills);
+			gridview.setAdapter(adapter);
 		}
 	}
 	

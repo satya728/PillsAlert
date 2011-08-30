@@ -27,7 +27,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
 		db.execSQL(DatabaseConfiguration.PILL_CREATE_STATEMENT);
 		db.execSQL(DatabaseConfiguration.NOTIFICATION_CREATE_STATEMENT);
 		db.execSQL(DatabaseConfiguration.PERIOD_CREATE_STATEMENT);
-		//add_dummy_data(db);
+		add_dummy_data(db);
 	}
 
 	private void add_dummy_data(SQLiteDatabase db) {
