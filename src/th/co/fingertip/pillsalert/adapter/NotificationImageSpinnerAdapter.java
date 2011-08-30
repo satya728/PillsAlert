@@ -6,6 +6,7 @@ import java.util.Vector;
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.Notification;
+import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -19,29 +20,60 @@ import android.widget.ImageView.ScaleType;
 public class NotificationImageSpinnerAdapter extends BaseAdapter {
 
 	private Context context;
-	private Vector<Notification> notifications;
+	private Vector<Pill> pills;
+	
 	private int gallery_item_background;
 	
-	private final int DUMMY_ID = -1;
-	private final Notification DUMMY_NOTIFICATION = new Notification(DUMMY_ID, DUMMY_ID, 
-														PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
+	private final String DUMMY_STRING = "dummy_pill";
+	private final String EMPTY_STRING = "";
+	private final Pill DUMMY_PILL = new Pill(DUMMY_STRING, DUMMY_STRING, 
+										PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
+	public Vector<Integer> pill_ids = new Vector<Integer>();
 	
-	public NotificationImageSpinnerAdapter(Context context, Notification[] notifications) {
-		init(context, notifications);
+	public NotificationImageSpinnerAdapter(Context context, Pill[] pills) {
+		init(context, pills);
+	}
+	
+	public NotificationImageSpinnerAdapter(Context context, Vector<Pill> pills) {
+		init(context, pills);
 	}
 
-	private void init(Context context, Notification[] notifications) {
+	private void init(Context context, Pill[] pills) {
 		this.context = context;
 		TypedArray typed = context.obtainStyledAttributes(R.styleable.Gallery1);
 		gallery_item_background = typed.getResourceId(
 				R.styleable.Gallery1_android_galleryItemBackground, 0);
 		typed.recycle();
 		//check pills whether it is empty or not
-		if (notifications.length == 0) {
-			this.notifications = new Vector<Notification>(Arrays.asList(new Notification[] 
-			                                                            {DUMMY_NOTIFICATION}));
+		if (pills.length == 0) {
+			this.pills = new Vector<Pill>(Arrays.asList(new Pill[] {DUMMY_PILL}));
 		} else {
-			this.notifications = new Vector<Notification>(Arrays.asList(notifications));
+			this.pills = new Vector<Pill>(Arrays.asList(pills));
+		}
+		
+		//populate pill_ids
+		for (Pill p : this.pills) {
+			if (p != DUMMY_PILL) pill_ids.add(p.id);
+		}
+		
+	}
+	
+	private void init(Context context, Vector<Pill> pills) {
+		this.context = context;
+		TypedArray typed = context.obtainStyledAttributes(R.styleable.Gallery1);
+		gallery_item_background = typed.getResourceId(
+				R.styleable.Gallery1_android_galleryItemBackground, 0);
+		typed.recycle();
+		//check pills whether it is empty or not
+		if (pills.size() == 0) {
+			this.pills = new Vector<Pill>(Arrays.asList(new Pill[] {DUMMY_PILL}));
+		} else {
+			this.pills = pills;
+		}
+		
+		//populate pill_ids
+		for (Pill p : this.pills) {
+			if (p != DUMMY_PILL) pill_ids.add(p.id);
 		}
 		
 	}
@@ -49,13 +81,13 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		
-		return notifications.size();
+		return pills.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		
-		return notifications.get(position);
+		return pills.get(position);
 	}
 
 	@Override
@@ -67,8 +99,8 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convert_view, ViewGroup parent) {
 		ImageView image_view;
-		Notification notification = notifications.get(position);
-		String file_name = notification.image;
+		Pill pill = pills.get(position);
+		String file_name = pill.image;
 		if (convert_view == null) {
 			image_view = new ImageView(context); 
 			image_view.setLayoutParams(new Gallery.LayoutParams(150, 150));
@@ -91,13 +123,27 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	//addItem
 	public boolean addItem(View object_info) {
 		
-		int add_id = (Integer) object_info.getTag(R.id.image_id);
+		String file_name = (String) object_info.getTag(R.id.image_name);
+		int id = (Integer) object_info.getTag(R.id.image_id);
 		
-		if (notifications.contains(DUMMY_NOTIFICATION)) {
-			notifications.remove(DUMMY_NOTIFICATION);
+		Pill p = new Pill(EMPTY_STRING, EMPTY_STRING, file_name);
+		
+		if (pills.contains(DUMMY_PILL)) {
+			pills.remove(DUMMY_PILL);
 		}
-		if (Notification.find(add_id) == null) {
-
+		
+		boolean found = false;
+		for (Pill temp : pills) {
+			if ((temp.image).equals(p.image)) {
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) {
+			pills.addElement(p);
+			pill_ids.add(id);
+			return true;
 		}
 		
 		return false;

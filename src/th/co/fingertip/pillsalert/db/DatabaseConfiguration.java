@@ -2,7 +2,7 @@ package th.co.fingertip.pillsalert.db;
 
 public class DatabaseConfiguration {
 	public static String DB_NAME = "pillsalert";
-	public static int DB_VERSION = 3;
+	public static int DB_VERSION = 4;
 	
 	//note table
 	public static String 	PILL_TABLE_NAME 				= "pills";
