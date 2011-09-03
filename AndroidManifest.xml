@@ -14,14 +14,14 @@
       
       <activity android:name="th.co.fingertip.pillsalert.GalleryActivity" ></activity>
       <activity android:name="th.co.fingertip.pillsalert.ui.MainActivity" >
-        				
-      </activity>
-       
-      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity">
-      <intent-filter>
+        <intent-filter>
           <action android:name="android.intent.action.MAIN" />
           <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+      </activity>
+       
+      <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity">
+        
       </activity>
       <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEditorActivity">
       </activity> 

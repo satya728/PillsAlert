@@ -43,8 +43,8 @@ public class PillEditorActivity extends Activity {
 		Bundle pill_data = getIntent().getExtras();
 		if(pill_data != null ){
 			row_id = pill_data.getInt(Pill.ID);
-			pill_title.setText(Pill.TITLE);
-			pill_note.setText(Pill.NOTE);
+			pill_title.setText(pill_data.getString(Pill.TITLE));
+			pill_note.setText(pill_data.getString(Pill.NOTE));
 			image = pill_data.getString(Pill.IMAGE);
 			if(image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
 				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(row_id+".PNG"));
@@ -80,6 +80,7 @@ public class PillEditorActivity extends Activity {
 							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						else{
+							pill_data.putString(Pill.IMAGE,PillsAlertEnum.FileName.PILL_DUMMY_FILENAME);
 							pill_data.putParcelable("image_bitmap", null);
 						}
 					}else{ //the image existed
@@ -93,7 +94,7 @@ public class PillEditorActivity extends Activity {
 							pill_data.putParcelable("image_bitmap", null);
 						}
 					}
-					pill_data.putLong(Pill.ID, row_id); //pill row id
+					pill_data.putInt(Pill.ID, row_id); //pill row id
 					update_pill_intent.putExtras(pill_data);
 					setResult(PillsAlertEnum.Result.PILL_UPDATE, update_pill_intent);
 				}
