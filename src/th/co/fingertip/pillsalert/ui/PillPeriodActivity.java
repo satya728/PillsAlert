@@ -97,35 +97,18 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 
 	
 	private void updateNotification(NotificationImageSpinnerAdapter adapter){
-		//notification_database.sqlite_db_instance.execSQL("delete from notifications where _id > 0 ");
-		//Cursor existing_notification_cursor = notification_database.selectRowWhere("period_id = " + adapter.period_id);
-		//Vector<Long> existing_notification_vector = Util.flatten_id(existing_notification_cursor);
+		Period current_period = periods[period_index];
+		Notification[] current_period_notification = Notification.find("period_id = ?", new String[]{current_period+""});
 		
-//		Iterator<Long> new_iterator = adapter.ids.iterator();
-//		Iterator<Long> existing_iterator = existing_notification_vector.iterator();
-//		//delete existing notification
-//		while(existing_iterator.hasNext()){
-//			Long old_id = (Long)existing_iterator.next();
-//			if(!adapter.ids.contains(old_id)){
-//				//delete
-//				notification_database.deleteRow(old_id);
-//			}
-//		}
-//		//add new notification
-//		int i = 0;
-//		while(new_iterator.hasNext()){
-//			Long id = (Long)new_iterator.next();
-//			if(!existing_notification_vector.contains(id)){
-//				Parameters p = new Parameters(PillsAlertEnum.Model.NOTIFICATION);
-//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[1], id);
-//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[2], adapter.period_id);
-//				p.put(DatabaseConfiguration.NOTIFICATION_SCHEMA_KEYS[3], adapter.images.get(i));
-//				notification_database.insertRow(p);
-//				i = i + 1;
-//			}
-//			
-//		}
-
+		for(int i=0; i<current_period_notification.length; i++){
+			Notification.delete(current_period_notification[i].id);
+		}
+		
+		for(int j=0; j<adapter.pill_ids.size(); j++){
+			Pill current_pill = Pill.find(adapter.pill_ids.get(j));
+			Notification new_notification = new Notification( current_pill.id, current_period.id, current_pill.image);
+			new_notification.save();
+		}
 	}
 	
 	@Override
