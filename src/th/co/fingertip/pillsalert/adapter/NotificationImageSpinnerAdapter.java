@@ -154,6 +154,7 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	public boolean updateItem (Pill[] pills_array) {
 		pills.clear();
 		init(context, pills_array);
+		notifyDataSetChanged();
 		
 		return false;
 		
