@@ -12,6 +12,8 @@ import th.co.fingertip.pillsalert.db.Period;
 import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
+import th.co.fingertip.pillsalert.dragndrop.SourceDragDropGallery;
+import th.co.fingertip.pillsalert.dragndrop.TargetDragDropGallery;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
 import android.os.Bundle;
@@ -24,8 +26,8 @@ import android.widget.TextView;
 public class PillPeriodActivity extends Activity implements OnClickListener {
 
 	
-	private DragDropGallery pill_gallery;
-	private DragDropGallery period_gallery;
+	private SourceDragDropGallery pill_gallery;
+	private TargetDragDropGallery period_gallery;
 	private DragLayer drag_layer;
 
 	private TextView period_title;
@@ -48,8 +50,8 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pill_period);
 		
-		pill_gallery = (DragDropGallery)findViewById(R.id.pill_gallery);
-		period_gallery = (DragDropGallery)findViewById(R.id.period_gallery);
+		pill_gallery = (SourceDragDropGallery)findViewById(R.id.pill_gallery);
+		period_gallery = (TargetDragDropGallery)findViewById(R.id.period_gallery);
 		
 		drag_layer = (DragLayer)findViewById(R.id.drag_layer);
 		
@@ -89,7 +91,6 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		period_gallery.setAdapter(period_spinner);
 		
 		pill_gallery.setDragger(drag_layer);
-		period_gallery.setDragger(drag_layer);
 		
 		previous_button.setOnClickListener(this);
 		next_button.setOnClickListener(this);	

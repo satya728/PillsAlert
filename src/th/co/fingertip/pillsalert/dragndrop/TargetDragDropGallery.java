@@ -11,7 +11,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.SpinnerAdapter;
 
 public class TargetDragDropGallery extends Gallery implements
-		OnItemClickListener, OnItemLongClickListener, DropTarget {
+		OnItemClickListener, OnItemLongClickListener, DropTarget  {
 	
 	private DragController dragger_controller;
 	private NotificationImageSpinnerAdapter notification_adapter;
@@ -72,7 +72,7 @@ public class TargetDragDropGallery extends Gallery implements
 	public boolean acceptDrop(DragSource source, int x, int y, int xOffset,
 			int yOffset, Object dragInfo) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -87,5 +87,6 @@ public class TargetDragDropGallery extends Gallery implements
 		// TODO Auto-generated method stub
 
 	}
+
 
 }

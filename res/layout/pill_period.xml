@@ -17,7 +17,7 @@
       android:layout_height="wrap_content"
       android:text ="Pills"/>
       
-    <th.co.fingertip.pillsalert.dragndrop.DragDropGallery
+    <th.co.fingertip.pillsalert.dragndrop.SourceDragDropGallery
         android:id="@+id/pill_gallery"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
@@ -40,7 +40,7 @@
 	      	android:text = "Prev"
 	      	android:layout_weight="1"/>
       	
-	   	<th.co.fingertip.pillsalert.dragndrop.DragDropGallery
+	   	<th.co.fingertip.pillsalert.dragndrop.TargetDragDropGallery
 	        android:id="@+id/period_gallery"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
