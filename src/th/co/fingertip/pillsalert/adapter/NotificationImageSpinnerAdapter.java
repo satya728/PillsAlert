@@ -146,4 +146,8 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 				
 	}
 	
+	public boolean deleteItem(int pill_id, Pill removed_pill) {
+		
+		return pills.remove(removed_pill) && pill_ids.remove(pill_ids);
+	}
 }
