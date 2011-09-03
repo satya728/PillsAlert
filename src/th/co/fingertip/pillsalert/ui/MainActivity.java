@@ -45,16 +45,16 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Pill.init(this);
+		gridview = (GridView)findViewById(R.id.main_ui_gridview);
 		
 		fill_data();
 		registerForContextMenu(gridview);
-
-		gridview = (GridView)findViewById(R.id.main_ui_gridview);
+		
 		gridview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 				Bundle pill_data = new Bundle();
-				pill_data.putLong(  Pill.ID,    pills[position].id);
+				pill_data.putInt(  Pill.ID,    pills[position].id);
 				pill_data.putString(Pill.TITLE, pills[position].title);
 				pill_data.putString(Pill.NOTE,  pills[position].note);
 				pill_data.putString(Pill.IMAGE, pills[position].image);
@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void fill_data(){
-		Pill[] pills = Pill.find(Pill.ALL); 
+		pills = Pill.find(Pill.ALL); 
 		
 		if(pills.length != 0){
 			PillImageAdapter adapter = new PillImageAdapter(getApplicationContext(), pills);
@@ -132,8 +132,8 @@ public class MainActivity extends Activity {
 					pill_data.getString(Pill.NOTE),
 					pill_data.getString(Pill.IMAGE)
 				);
-				
-				if((local_pill != null) && (pill_image_bitmap!=null) ){
+				local_pill.save();
+				if(pill_image_bitmap!=null){
 					local_pill.save();
 					local_pill.image = local_pill.id+".PNG";
 					local_pill.save();
