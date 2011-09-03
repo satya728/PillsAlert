@@ -160,7 +160,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 					Period current_period = periods[period_index];
 					period_title.setText(current_period.title);
 					local_pills = Notification.findPillByPeriod(current_period.id);
-					//pill_spinner.updateItem(notification_cursor, model);
+					pill_spinner.updateItem(local_pills, model);
 				}
 				catch(ArrayIndexOutOfBoundsException e){
 					Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
@@ -174,10 +174,10 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 					Period current_period = periods[period_index];
 					period_title.setText(current_period.title);
 					local_pills = Notification.findPillByPeriod(current_period.id);
-					//pill_spinner.updateItem(notification_cursor, model);
+					pill_spinner.updateItem(local_pills, model);
 				}
 				catch(ArrayIndexOutOfBoundsException e){
-					Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
+					Util.put(getApplicationContext(), "no next period", Util.SHORT_TRACE);
 				}
 				break;
 		}
