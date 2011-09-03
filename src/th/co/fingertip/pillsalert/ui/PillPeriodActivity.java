@@ -150,36 +150,36 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		int resourceIsClicked = view.getId();
 		int model = PillsAlertEnum.Model.NOTIFICATION;
-		
+		Pill[] local_pills;
 		switch (resourceIsClicked) {
 		
-		case R.id.previous_period_button:
-			updateNotification(period_spinner);
-			try{
-				period_index = period_index - 1;
-				Period current_period = periods[period_index];
-				period_title.setText(current_period.title);
-				notifications = Notification.find("period_id=?", new String[]{current_period.id+""});
-				//pill_spinner.updateItem(notification_cursor, model);
-			}
-			catch(ArrayIndexOutOfBoundsException e){
-				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
-			}
-			break;
-		
-		case R.id.next_period_button:
-			updateNotification(period_spinner);
-			try{
-				period_index = period_index + 1;
-				Period current_period = periods[period_index];
-				period_title.setText(current_period.title);
-				notifications = Notification.find("period_id=?", new String[]{current_period.id+""});
-				//pill_spinner.updateItem(notification_cursor, model);
-			}
-			catch(ArrayIndexOutOfBoundsException e){
-				Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
-			}
-			break;
+			case R.id.previous_period_button:
+				updateNotification(period_spinner);
+				try{
+					period_index = period_index - 1;
+					Period current_period = periods[period_index];
+					period_title.setText(current_period.title);
+					local_pills = Notification.findPillByPeriod(current_period.id);
+					//pill_spinner.updateItem(notification_cursor, model);
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
+				}
+				break;
+			
+			case R.id.next_period_button:
+				updateNotification(period_spinner);
+				try{
+					period_index = period_index + 1;
+					Period current_period = periods[period_index];
+					period_title.setText(current_period.title);
+					local_pills = Notification.findPillByPeriod(current_period.id);
+					//pill_spinner.updateItem(notification_cursor, model);
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					Util.put(getApplicationContext(), "no previous period", Util.SHORT_TRACE);
+				}
+				break;
 		}
 	}	
 }

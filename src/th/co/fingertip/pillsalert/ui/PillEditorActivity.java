@@ -46,8 +46,8 @@ public class PillEditorActivity extends Activity {
 			pill_title.setText(pill_data.getString(Pill.TITLE));
 			pill_note.setText(pill_data.getString(Pill.NOTE));
 			image = pill_data.getString(Pill.IMAGE);
-			if(image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
-				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(row_id+".PNG"));
+			if(!image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
+				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(image));
 			}
 		}
 		
