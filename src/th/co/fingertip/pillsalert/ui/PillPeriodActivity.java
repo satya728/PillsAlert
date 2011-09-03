@@ -201,6 +201,10 @@ public class PillPeriodActivity extends Activity implements OnClickListener, OnI
 	public boolean onItemLongClick(AdapterView<?> adapter_view, View view, int position, long id) {
 		int pill_id = (Integer)view.getTag(R.id.image_id);
 		Pill.delete(pill_id);
+		
+		Pill my_pill = Pill.find(pill_id);
+		period_spinner.deleteItem(pill_id, my_pill);
+		
 		return true;
 	}	
 }
