@@ -172,6 +172,16 @@ public class Notification {
 		return getNotificationArray();
 	}
 	
+	
+	public static Pill[] findPillByPeriod(int period_id){
+		Notification[] notifications = find("period_id=?", new String[]{period_id+""});
+		Pill[] pills = new Pill[notifications.length];
+ 		for(int i=0; i< notifications.length;i++){
+			pills[i] = Pill.find(notifications[i].pill_id);
+		}
+ 		return pills;
+	}
+	
 	public static void delete(int id){
 		String[] parameters = {""+id};
 		sqlite_database.delete(table_name, "_id = ?", parameters);
@@ -189,4 +199,6 @@ public class Notification {
 		}
 		return (new Notification[] {});
 	}
+	
+	
 }
