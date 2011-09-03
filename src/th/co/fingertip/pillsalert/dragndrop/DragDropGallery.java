@@ -1,12 +1,15 @@
 package th.co.fingertip.pillsalert.dragndrop;
 
+import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
+import th.co.fingertip.pillsalert.adapter.NotificationImageSpinnerAdapter;
+import th.co.fingertip.pillsalert.adapter.PillImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.util.Util;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Gallery;
 import android.widget.AdapterView;
+import android.widget.Gallery;
 import android.widget.SpinnerAdapter;
 
 public class DragDropGallery extends Gallery implements AdapterView.OnItemClickListener, 
@@ -14,6 +17,8 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 
 	private DragController dragger_controller;
 	private ImageSpinnerAdapter image_adapter;
+	private PillImageSpinnerAdapter pill_adapter;
+	private NotificationImageSpinnerAdapter notification_adapter;
 	
 	public DragDropGallery(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -25,8 +30,18 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 
 	@Override
 	public void setAdapter(SpinnerAdapter adapter) {
-		image_adapter = (ImageSpinnerAdapter) adapter;
+		//image_adapter = (ImageSpinnerAdapter) adapter;
 		super.setAdapter(image_adapter);
+	}
+	
+	public void setAdapter(PillImageSpinnerAdapter pill_adapter) {
+		this.pill_adapter = pill_adapter;
+		super.setAdapter(pill_adapter);
+	}
+	
+	public void setAdapter(NotificationImageSpinnerAdapter notification_adapter) {
+		this.notification_adapter = notification_adapter;
+		super.setAdapter(notification_adapter);
 	}
 
 	public DragDropGallery(Context context) {
@@ -77,9 +92,11 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 			int yOffset, Object dragInfo) {
 		
 		Util.put(getContext(), "onDrop" + dragInfo.toString(), Util.SHORT_TRACE);
+		View v = (View)dragInfo;
+		String st = (String) v.getTag(R.id.image_name);
+		notification_adapter.addItem(v);
 		
-		image_adapter.addItem(((View)dragInfo));
-		image_adapter.notifyDataSetChanged();
+		notification_adapter.notifyDataSetChanged();
 
 	}
 

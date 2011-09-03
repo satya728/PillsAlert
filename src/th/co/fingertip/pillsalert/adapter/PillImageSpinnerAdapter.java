@@ -84,6 +84,9 @@ public class PillImageSpinnerAdapter extends BaseAdapter {
 			image_view.setImageBitmap(ImageFactory.get_bitmap(file_name));
 		}
 		
+		image_view.setTag(R.id.image_id, pill.id);
+		image_view.setTag(R.id.image_name, file_name);
+		
 		return image_view;
 	}
 

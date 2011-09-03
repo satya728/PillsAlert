@@ -1,29 +1,23 @@
 package th.co.fingertip.pillsalert.ui;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
-import th.co.fingertip.pillsalert.TimeService;
 import th.co.fingertip.pillsalert.adapter.ImageSpinnerAdapter;
-import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
+import th.co.fingertip.pillsalert.adapter.NotificationImageSpinnerAdapter;
+import th.co.fingertip.pillsalert.adapter.PillImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.Notification;
-import th.co.fingertip.pillsalert.db.NotificationDatabaseAdapter;
-import th.co.fingertip.pillsalert.db.Parameters;
 import th.co.fingertip.pillsalert.db.Period;
-import th.co.fingertip.pillsalert.db.PeriodDatabaseAdapter;
 import th.co.fingertip.pillsalert.db.Pill;
-import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
 import th.co.fingertip.pillsalert.util.Util;
 import android.app.Activity;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,12 +33,13 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	private Button previous_button;
 	private Button next_button;
 	
-	private ImageSpinnerAdapter pill_spinner;
-	private ImageSpinnerAdapter period_spinner;
+	private PillImageSpinnerAdapter pill_spinner;
+	private NotificationImageSpinnerAdapter period_spinner;
 
 	private int period_index;
 	
 	private Pill[] pills;
+	private Vector<Pill> pills_in_period;
 	private Period[] periods;
 	private Notification[] notifications;
 	
@@ -80,11 +75,15 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 		
 		notifications = Notification.find("period_id = ?", new String[]{""+periods[0].id});
 		
-
-//		pill_spinner = new ImageSpinnerAdapter(
-//						this,false,pills,PillsAlertEnum.Model.PILL);
-//		period_spinner = new ImageSpinnerAdapter(
-//						this,true,notifications,period_id,PillsAlertEnum.Model.NOTIFICATION);
+		//find pill in particular periods
+		pills_in_period = new Vector<Pill>();
+		for (Notification n : notifications) {
+			Pill p = Pill.find(n.pill_id);
+			pills_in_period.add(p);
+		}
+		
+		pill_spinner = new PillImageSpinnerAdapter(getBaseContext(), pills);
+		period_spinner = new NotificationImageSpinnerAdapter (getBaseContext(), pills_in_period);
 		
 		pill_gallery.setAdapter(pill_spinner);
 		period_gallery.setAdapter(period_spinner);
@@ -97,7 +96,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	}
 
 	
-	private void updateNotification(ImageSpinnerAdapter adapter){
+	private void updateNotification(NotificationImageSpinnerAdapter adapter){
 		//notification_database.sqlite_db_instance.execSQL("delete from notifications where _id > 0 ");
 		//Cursor existing_notification_cursor = notification_database.selectRowWhere("period_id = " + adapter.period_id);
 		//Vector<Long> existing_notification_vector = Util.flatten_id(existing_notification_cursor);
