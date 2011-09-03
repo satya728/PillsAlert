@@ -93,10 +93,7 @@ public class DragDropGallery extends Gallery implements AdapterView.OnItemClickL
 		
 		Util.put(getContext(), "onDrop" + dragInfo.toString(), Util.SHORT_TRACE);
 		View v = (View)dragInfo;
-		String st = (String) v.getTag(R.id.image_name);
 		notification_adapter.addItem(v);
-		
-		notification_adapter.notifyDataSetChanged();
 
 	}
 

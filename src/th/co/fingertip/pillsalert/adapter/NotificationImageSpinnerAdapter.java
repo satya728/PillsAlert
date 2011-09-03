@@ -143,6 +143,7 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 		if (!found) {
 			pills.addElement(p);
 			pill_ids.add(id);
+			notifyDataSetChanged();
 			return true;
 		}
 		
@@ -151,13 +152,11 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	}
 	
 	//updateItem
-	public boolean updateItem (Pill[] pills_array) {
+	public void updateItem (Pill[] pills_array) {
 		pills.clear();
 		init(context, pills_array);
 		notifyDataSetChanged();
-		
-		return false;
-		
+				
 	}
 	
 }

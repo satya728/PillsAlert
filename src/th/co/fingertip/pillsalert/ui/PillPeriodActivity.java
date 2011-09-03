@@ -149,7 +149,7 @@ public class PillPeriodActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		
 		int resourceIsClicked = view.getId();
-		int model = PillsAlertEnum.Model.NOTIFICATION;
+		
 		Pill[] local_pills;
 		switch (resourceIsClicked) {
 		
