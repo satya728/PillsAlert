@@ -73,10 +73,11 @@ public class PillEditorActivity extends Activity {
 				}
 				//update pill
 				else{
+					Pill local_pill = Pill.find(row_id);
 					Intent update_pill_intent = new Intent();
 					if(image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME) ){ //no image at first
 						if(pill_bitmap != null){
-							pill_data.putString(Pill.IMAGE,row_id+".PNG");
+							pill_data.putString(Pill.IMAGE, local_pill.image);
 							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						else{
@@ -84,9 +85,9 @@ public class PillEditorActivity extends Activity {
 							pill_data.putParcelable("image_bitmap", null);
 						}
 					}else{ //the image existed
+						pill_data.putString(Pill.IMAGE, local_pill.image);
 						//new image
 						if(pill_bitmap != null){
-							pill_data.putString(Pill.IMAGE,row_id+".PNG");
 							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						//use existing image
@@ -100,6 +101,8 @@ public class PillEditorActivity extends Activity {
 				}
 				finish();
 			}
+
+			
 		});
 		
 		pill_image_button.setOnClickListener(new View.OnClickListener() {			
@@ -109,6 +112,14 @@ public class PillEditorActivity extends Activity {
 		        startActivityForResult(camera_intent, PillsAlertEnum.Request.CAMERA_PIC_REQUEST);
 			}
 		});
+		
+		int request_code = getIntent().getExtras().getInt("request_code");
+		if(request_code == PillsAlertEnum.Request.PILL_READ){
+			pill_title.setEnabled(false);
+			pill_note.setEnabled(false);
+			pill_image_button.setEnabled(false);
+			save_pill_button.setEnabled(false);
+		}
 	}
 	
 	@Override

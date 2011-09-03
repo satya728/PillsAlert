@@ -39,23 +39,7 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	}
 
 	private void init(Context context, Pill[] pills) {
-		this.context = context;
-		TypedArray typed = context.obtainStyledAttributes(R.styleable.Gallery1);
-		gallery_item_background = typed.getResourceId(
-				R.styleable.Gallery1_android_galleryItemBackground, 0);
-		typed.recycle();
-		//check pills whether it is empty or not
-		if (pills.length == 0) {
-			this.pills = new Vector<Pill>(Arrays.asList(new Pill[] {DUMMY_PILL}));
-		} else {
-			this.pills = new Vector<Pill>(Arrays.asList(pills));
-		}
-		
-		//populate pill_ids
-		for (Pill p : this.pills) {
-			if (p != DUMMY_PILL) pill_ids.add(p.id);
-		}
-		
+		init(context, new Vector<Pill>(Arrays.asList(pills)));
 	}
 	
 	private void init(Context context, Vector<Pill> pills) {
@@ -115,6 +99,8 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 		} else {
 			image_view.setImageBitmap(ImageFactory.get_bitmap(file_name));
 		}
+		image_view.setTag(R.id.image_id, pill.id);
+		image_view.setTag(R.id.image_name, file_name);
 		
 		return image_view;
 	}
@@ -154,6 +140,7 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	//updateItem
 	public void updateItem (Pill[] pills_array) {
 		pills.clear();
+		pill_ids.clear();
 		init(context, pills_array);
 		notifyDataSetChanged();
 				
