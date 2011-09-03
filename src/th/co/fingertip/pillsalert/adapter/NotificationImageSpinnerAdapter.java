@@ -150,4 +150,13 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 		
 	}
 	
+	//updateItem
+	public boolean updateItem (Pill[] pills_array) {
+		pills.clear();
+		init(context, pills_array);
+		
+		return false;
+		
+	}
+	
 }
