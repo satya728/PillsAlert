@@ -10,7 +10,6 @@ import th.co.fingertip.pillsalert.adapter.PillImageSpinnerAdapter;
 import th.co.fingertip.pillsalert.db.Notification;
 import th.co.fingertip.pillsalert.db.Period;
 import th.co.fingertip.pillsalert.db.Pill;
-import th.co.fingertip.pillsalert.dragndrop.DragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.DragLayer;
 import th.co.fingertip.pillsalert.dragndrop.SourceDragDropGallery;
 import th.co.fingertip.pillsalert.dragndrop.TargetDragDropGallery;
