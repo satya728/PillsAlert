@@ -77,7 +77,7 @@ public class PillEditorActivity extends Activity {
 					Intent update_pill_intent = new Intent();
 					if(image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME) ){ //no image at first
 						if(pill_bitmap != null){
-							pill_data.putString(Pill.IMAGE, local_pill.image);
+							pill_data.putString(Pill.IMAGE, local_pill.id+".PNG");
 							pill_data.putParcelable("image_bitmap", pill_bitmap); //pill image
 						}
 						else{
@@ -123,28 +123,32 @@ public class PillEditorActivity extends Activity {
 	}
 	
 	@Override
-	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	      super.onActivityResult(requestCode, resultCode, data);
-	      Bitmap m = null;
-	      if (requestCode == PillsAlertEnum.Request.CAMERA_PIC_REQUEST) {
-	    	  Bundle b = data.getExtras();
-	    	  Uri u = data.getData();
-			try{
-				if(u!=null) {
-					m = MediaStore.Images.Media.getBitmap(getContentResolver(), u);
-				}
-				else {
-					Bitmap mu = (Bitmap) data.getExtras().get("data");
-					m = mu;
-				}
-				m = Bitmap.createScaledBitmap(m, 120, 120, true);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+      super.onActivityResult(requestCode, resultCode, data);
+      Bitmap m = null;
+      if (requestCode == PillsAlertEnum.Request.CAMERA_PIC_REQUEST) {
+    	  Bundle b = data.getExtras();
+    	  Uri u = data.getData();
+		try{
+			if(u!=null) {
+				m = MediaStore.Images.Media.getBitmap(getContentResolver(), u);
 			}
-			catch(Exception e){
-				Toast.makeText(this, "error", Toast.LENGTH_LONG).show();
+			else {
+				Bitmap mu = (Bitmap) data.getExtras().get("data");
+				m = mu;
 			}
-			    pill_image_button.setImageBitmap(m);
-			    pill_bitmap = m;
-	      }        
-	  }
+			m = Bitmap.createScaledBitmap(m, 120, 120, true);
+		}
+		catch(Exception e){
+			Toast.makeText(this, "error", Toast.LENGTH_LONG).show();
+		}
+		    pill_image_button.setImageBitmap(m);
+		    pill_bitmap = m;
+      }        
+	}
 	
+	public void onBackPressed(){
+		super.onBackPressed();
+		
+	}
 }

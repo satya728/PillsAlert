@@ -125,14 +125,18 @@ public class MainActivity extends Activity {
 			case R.id.main_context_menu_delete_pill:
 				AdapterContextMenuInfo context_menu_info = (AdapterContextMenuInfo)item.getMenuInfo();
 				int id = (int) context_menu_info.id;
-				Pill to_be_deleted_pill = Pill.find(id);
-				Pill.delete(id);
+				
 				Notification[] notification = Notification.find("pill_id = ?", new String[]{id+""});
 				if(notification.length != 0){
 					for(int i=0;i<notification.length;i++){
-						Notification.delete(i);
+						Notification.delete(notification[i].id);
 					}
 				}
+				
+				Pill to_be_deleted_pill = Pill.find(id);
+				Pill.delete(id);
+				
+				fill_data();
 				break;
 		}
 		return true;
