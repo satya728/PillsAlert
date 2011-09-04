@@ -111,7 +111,6 @@ public class PillPeriodActivity extends Activity implements OnClickListener, OnI
 		Notification[] current_period_notification = Notification.find("period_id = ?", new String[]{current_period.id+""});
 		
 		for(int i=0; i<current_period_notification.length; i++){
-			int uid =current_period_notification[i].id;
 			Notification.delete(current_period_notification[i].id);
 		}
 		
