@@ -57,7 +57,9 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 		
 		//populate pill_ids
 		for (Pill p : this.pills) {
-			if (p != DUMMY_PILL) pill_ids.add(p.id);
+			if (p != DUMMY_PILL) { 
+				pill_ids.add(p.id);
+			} 
 		}
 		
 	}
