@@ -49,6 +49,17 @@ public class PillEditorActivity extends Activity {
 			if(!image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
 				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(image));
 			}
+			
+			//check read only mode
+			if(pill_data.containsKey("request_code")){
+				int request_code = getIntent().getExtras().getInt("request_code");
+				if(request_code == PillsAlertEnum.Request.PILL_READ){
+					pill_title.setEnabled(false);
+					pill_note.setEnabled(false);
+					pill_image_button.setEnabled(false);
+					save_pill_button.setEnabled(false);
+				}
+			}
 		}
 		
 		save_pill_button.setOnClickListener(new View.OnClickListener() {
@@ -112,14 +123,7 @@ public class PillEditorActivity extends Activity {
 		        startActivityForResult(camera_intent, PillsAlertEnum.Request.CAMERA_PIC_REQUEST);
 			}
 		});
-		
-		int request_code = getIntent().getExtras().getInt("request_code");
-		if(request_code == PillsAlertEnum.Request.PILL_READ){
-			pill_title.setEnabled(false);
-			pill_note.setEnabled(false);
-			pill_image_button.setEnabled(false);
-			save_pill_button.setEnabled(false);
-		}
+
 	}
 	
 	@Override
@@ -149,6 +153,5 @@ public class PillEditorActivity extends Activity {
 	
 	public void onBackPressed(){
 		super.onBackPressed();
-		
 	}
 }

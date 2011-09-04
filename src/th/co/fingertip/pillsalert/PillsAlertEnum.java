@@ -26,10 +26,10 @@ public class PillsAlertEnum {
 		public static final int CAMERA_PIC_REQUEST 		= 1414;
 	}
 	public static class Result{
-		public static final int PILL_CREATE 			= 0;
-		public static final int PILL_READ 	 			= 1;
-		public static final int PILL_UPDATE 			= 2;
-		public static final int PILL_DELETE 			= 3;
+		public static final int PILL_CREATE 			= 1;
+		public static final int PILL_READ 	 			= 2;
+		public static final int PILL_UPDATE 			= 3;
+		public static final int PILL_DELETE 			= 4;
 		
 		public static final int NOTIFICATION_CREATE	 	= 10;
 		public static final int NOTIFICATION_READ		= 11;
