@@ -179,4 +179,14 @@ public class Pill {
 		}
 		return (new Pill[]{});
 	}
+	@Override
+	public boolean equals(Object o) {
+		Pill compared_pill = (Pill)o;
+		if(compared_pill.id == id){
+			return true;
+		}
+		return false;
+	}
+	
+	
 }
