@@ -104,11 +104,11 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 		image_view.setTag(R.id.image_id, pill.id);
 		image_view.setTag(R.id.image_name, file_name);
 		
-		return image_view;
-	}
-
+		return image_view;				
+	}																				
 	
-	//addItem
+	
+	//addItem		
 	public boolean addItem(View object_info) {
 		
 		String file_name = (String) object_info.getTag(R.id.image_name);
