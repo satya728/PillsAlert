@@ -183,7 +183,7 @@ public class Pill {
 	@Override
 	public boolean equals(Object o) {
 		Pill compared_pill = (Pill)o;
-		if(compared_pill.id == id){
+		if((compared_pill.title.equals(title)) &&(compared_pill.note.equals(note)) && (compared_pill.image.equals(image))){
 			return true;
 		}
 		return false;

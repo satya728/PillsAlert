@@ -199,12 +199,12 @@ public class Notification {
 		return (new Notification[] {});
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		Notification compared_notification = (Notification)o;
-		if(compared_notification.id == id){
-			return true;
-		}
-		return false;
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//		Notification compared_notification = (Notification)o;
+//		if(compared_notification.id == id){
+//			return true;
+//		}
+//		return false;
+//	}
 }

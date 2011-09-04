@@ -181,12 +181,12 @@ public class Period {
 		return (new Period[]{});
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		Period compared_period = (Period)o;
-		if(compared_period.id == id){
-			return true;
-		}
-		return false;
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//		Period compared_period = (Period)o;
+//		if(compared_period.id == id){
+//			return true;
+//		}
+//		return false;
+//	}
 }

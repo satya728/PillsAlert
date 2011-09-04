@@ -128,8 +128,10 @@ public class MainActivity extends Activity {
 				Pill to_be_deleted_pill = Pill.find(id);
 				Pill.delete(id);
 				Notification[] notification = Notification.find("pill_id = ?", new String[]{id+""});
-				for(int i=0;i<notification.length;i++){
-					Notification.delete(i);
+				if(notification.length != 0){
+					for(int i=0;i<notification.length;i++){
+						Notification.delete(i);
+					}
 				}
 				break;
 		}
