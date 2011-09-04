@@ -144,6 +144,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if(data == null){
+			return;
+		}
 		Bundle pill_data = data.getExtras();
 		Pill local_pill = null;
 		

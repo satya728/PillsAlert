@@ -8,6 +8,7 @@ import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -153,5 +154,7 @@ public class PillEditorActivity extends Activity {
 	
 	public void onBackPressed(){
 		super.onBackPressed();
+		Intent cancel_intent = new Intent(this, MainActivity.class);
+		setResult(RESULT_CANCELED, cancel_intent);
 	}
 }
