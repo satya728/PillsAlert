@@ -187,7 +187,6 @@ public class Notification {
 		sqlite_database.delete(table_name, "_id = ?", parameters);
 	}
 	
-	
 	private static Notification[] getNotificationArray(){
 		if(cursor.getCount() != 0 ){
 			Notification[] results = new Notification[cursor.getCount()];
