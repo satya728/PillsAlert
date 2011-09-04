@@ -6,7 +6,9 @@ import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.adapter.PillImageAdapter;
 import th.co.fingertip.pillsalert.db.DatabaseConfiguration;
+import th.co.fingertip.pillsalert.db.Notification;
 import th.co.fingertip.pillsalert.db.Parameters;
+import th.co.fingertip.pillsalert.db.Period;
 import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.db.PillDatabaseAdapter;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
@@ -24,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
@@ -67,7 +70,6 @@ public class MainActivity extends Activity {
 
 	private void fill_data(){
 		pills = Pill.find(Pill.ALL); 
-		
 		if(pills.length != 0){
 			PillImageAdapter adapter = new PillImageAdapter(getApplicationContext(), pills);
 			gridview.setAdapter(adapter);
@@ -111,6 +113,24 @@ public class MainActivity extends Activity {
 			case R.id.main_assign_period:
 				Intent assign_period_intent = new Intent(this, PillPeriodActivity.class);
 				startActivity(assign_period_intent);
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		super.onContextItemSelected(item);
+		switch(item.getItemId()){
+			case R.id.main_context_menu_delete_pill:
+				AdapterContextMenuInfo context_menu_info = (AdapterContextMenuInfo)item.getMenuInfo();
+				int id = (int) context_menu_info.id;
+				Pill to_be_deleted_pill = Pill.find(id);
+				Pill.delete(id);
+				Notification[] notification = Notification.find("pill_id = ?", new String[]{id+""});
+				for(int i=0;i<notification.length;i++){
+					Notification.delete(i);
+				}
 				break;
 		}
 		return true;
