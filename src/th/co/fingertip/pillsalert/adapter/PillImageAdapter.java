@@ -1,5 +1,8 @@
 package th.co.fingertip.pillsalert.adapter;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 import th.co.fingertip.pillsalert.PillsAlertEnum;
 import th.co.fingertip.pillsalert.R;
 import th.co.fingertip.pillsalert.db.Pill;
@@ -15,29 +18,34 @@ import android.widget.ImageView.ScaleType;
 public class PillImageAdapter extends BaseAdapter {
 
 	private Context context;
-	private Pill[] pills;
+	private Vector<Pill> pills;
+	
+	public PillImageAdapter(Context context, Vector<Pill> pills) {
+		this.context = context;
+		this.pills = pills;
+	}
 	
 	public PillImageAdapter(Context context, Pill[] pills) {
 		this.context = context;
-		this.pills = pills;
+		this.pills = new Vector<Pill>(Arrays.asList(pills));
 	}
 	
 	@Override
 	public int getCount() {
 	
-		return pills.length;
+		return pills.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		
-		return pills[position];
+		return pills.get(position);
 	}
 	
 	@Override
 	public long getItemId(int position) {
 
-		return position;
+		return pills.get(position).id;
 	}
 
 	@Override
@@ -53,8 +61,7 @@ public class PillImageAdapter extends BaseAdapter {
 			image_view = (ImageView) convert_view;
 		}
 		
-		Pill p = pills[position];
-		String file_name = p.image;
+		String file_name = pills.get(position).image;
 		if (file_name.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)) {
 			image_view.setImageResource(R.drawable.dummy_pill);
 		} else {
@@ -64,4 +71,13 @@ public class PillImageAdapter extends BaseAdapter {
 		return image_view;
 	}
 
+	public boolean deleteItem(Pill p) {
+		
+		if (pills.remove(p)) {
+			notifyDataSetChanged();
+			return true;
+		}
+		return false;
+		
+	}
 }
