@@ -147,11 +147,8 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 	}
 	
 	public boolean deleteItem(int pill_id, Pill removed_pill) {
-		
-		boolean xx = pills.remove(removed_pill);
-		boolean yy = pill_ids.remove((Integer)pill_id);
-		String aaa = "t";
+		boolean result = pills.remove(removed_pill) && pill_ids.remove((Integer)pill_id);
 		notifyDataSetChanged();
-		return xx;
+		return result;
 	}
 }
