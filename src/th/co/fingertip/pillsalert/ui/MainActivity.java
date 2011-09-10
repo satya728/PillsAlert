@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -25,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -47,6 +49,10 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		//getWindow().setFormat(PixelFormat.RGB_332);
+		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
+		
 		Pill.init(this);
 		gridview = (GridView)findViewById(R.id.main_ui_gridview);
 		
@@ -61,9 +67,9 @@ public class MainActivity extends Activity {
 				pill_data.putString(Pill.TITLE, pills[position].title);
 				pill_data.putString(Pill.NOTE,  pills[position].note);
 				pill_data.putString(Pill.IMAGE, pills[position].image);
-				Intent edit_note_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
-				edit_note_intent.putExtras(pill_data);
-				startActivityForResult(edit_note_intent, PillsAlertEnum.Request.PERIOD_UPDATE);  
+				Intent edit_pill_intent = new Intent(getApplicationContext(), PillEditorActivity.class);
+				edit_pill_intent.putExtras(pill_data);
+				startActivityForResult(edit_pill_intent, PillsAlertEnum.Request.PERIOD_UPDATE);
 			}
 		});
 	}
@@ -105,6 +111,7 @@ public class MainActivity extends Activity {
 			case R.id.main_add_pill:
 				Intent create_intent = new Intent(this, PillEditorActivity.class);
 				startActivityForResult(create_intent, PillsAlertEnum.Request.PERIOD_CREATE);
+				//startActivity(create_intent);
 				break;
 			case R.id.main_set_period:
 				Intent period_setting_intent = new Intent(this, PeriodSettingActivity.class);
@@ -132,10 +139,8 @@ public class MainActivity extends Activity {
 						Notification.delete(notification[i].id);
 					}
 				}
-				
 				Pill to_be_deleted_pill = Pill.find(id);
 				Pill.delete(id);
-				
 				fill_data();
 				break;
 		}
@@ -145,6 +150,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if(data == null){
+			return;
+		}
 		Bundle pill_data = data.getExtras();
 		Pill local_pill = null;
 		
@@ -171,12 +179,12 @@ public class MainActivity extends Activity {
 				local_pill.title = pill_data.getString(Pill.TITLE);
 				local_pill.note = pill_data.getString(Pill.NOTE);
 				local_pill.image = pill_data.getString(Pill.IMAGE);
-				
 				local_pill.save();
-				
 				if(pill_image_bitmap!=null){
 					ImageFactory.save_bitmap(pill_image_bitmap, local_pill.image);
 				}
+				break;
+			case RESULT_CANCELED:
 				break;
 			default:
 				break;

@@ -66,8 +66,7 @@ public class NotificationImageSpinnerAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		
-		return pills.size();
+		return pill_ids.size();
 	}
 
 	@Override

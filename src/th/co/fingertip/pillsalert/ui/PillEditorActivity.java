@@ -8,6 +8,7 @@ import th.co.fingertip.pillsalert.db.Pill;
 import th.co.fingertip.pillsalert.factory.ImageFactory;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,17 @@ public class PillEditorActivity extends Activity {
 			image = pill_data.getString(Pill.IMAGE);
 			if(!image.equals(PillsAlertEnum.FileName.PILL_DUMMY_FILENAME)){
 				pill_image_button.setImageBitmap(ImageFactory.get_bitmap(image));
+			}
+			
+			//check read only mode
+			if(pill_data.containsKey("request_code")){
+				int request_code = getIntent().getExtras().getInt("request_code");
+				if(request_code == PillsAlertEnum.Request.PILL_READ){
+					pill_title.setEnabled(false);
+					pill_note.setEnabled(false);
+					pill_image_button.setEnabled(false);
+					save_pill_button.setEnabled(false);
+				}
 			}
 		}
 		
@@ -112,14 +124,7 @@ public class PillEditorActivity extends Activity {
 		        startActivityForResult(camera_intent, PillsAlertEnum.Request.CAMERA_PIC_REQUEST);
 			}
 		});
-		
-		int request_code = getIntent().getExtras().getInt("request_code");
-		if(request_code == PillsAlertEnum.Request.PILL_READ){
-			pill_title.setEnabled(false);
-			pill_note.setEnabled(false);
-			pill_image_button.setEnabled(false);
-			save_pill_button.setEnabled(false);
-		}
+
 	}
 	
 	@Override
@@ -149,6 +154,7 @@ public class PillEditorActivity extends Activity {
 	
 	public void onBackPressed(){
 		super.onBackPressed();
-		
+		Intent cancel_intent = new Intent(this, MainActivity.class);
+		setResult(RESULT_CANCELED, cancel_intent);
 	}
 }

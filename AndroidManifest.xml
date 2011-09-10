@@ -25,6 +25,10 @@
       <activity android:name="th.co.fingertip.pillsalert.ui.PeriodSettingActivity">
 
       </activity>
+
+      <activity android:name="th.co.fingertip.pillsalert.ui.XActivity">
+
+      </activity>
        
       <activity android:name="th.co.fingertip.pillsalert.ui.PeriodEditorActivity">
       </activity> 
