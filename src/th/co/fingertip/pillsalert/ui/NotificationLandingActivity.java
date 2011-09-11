@@ -46,6 +46,7 @@ public class NotificationLandingActivity extends Activity{//
 		period_id = Period.find(Period.ALL)[0].id;//savedInstanceState.getInt("period_id");
 		Pill[] pills = Notification.findPillByPeriod(period_id);
 		CustomAdapter c = new CustomAdapter(this, R.layout.notification_landing_row, R.id.notification_landing_pill_title, pills);
+		list_view.setAdapter(c);
 	}
 	
 	private class CustomAdapter extends ArrayAdapter<Pill>{
