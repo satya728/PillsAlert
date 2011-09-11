@@ -50,9 +50,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		//getWindow().setFormat(PixelFormat.RGB_332);
-		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		
 		Pill.init(this);
 		gridview = (GridView)findViewById(R.id.main_ui_gridview);
 		
