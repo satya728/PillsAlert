@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <ImageView
-    android:id="@+id/notification_landing_row_item"
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent"
-    android:textAppearance="?android:attr/textAppearanceLarge"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" 
+  android:layout_height="wrap_content" 
+  android:orientation="horizontal" 
+  android:padding="10dip"
+>
+  <ImageView 
+    android:id="@+id/notification_landing_pill_image" 
+    android:layout_width="32dip" 
+    android:layout_height="32dip"
+  /> 
+  <TextView 
+    android:id="@+id/notification_landing_pill_title" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:layout_toRightOf="@id/notification_landing_pill_image" 
+    android:layout_centerVertical="true" 
+    android:gravity="center_horizontal"
   />
-  <TextView
-    android:id="@+id/period_setting_row_item"
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text ="dsfdsfsd"
-  />    
-</LinearLayout>
+</RelativeLayout>
